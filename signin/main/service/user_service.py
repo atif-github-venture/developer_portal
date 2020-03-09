@@ -6,7 +6,7 @@ from signin.main import db
 from signin.main.model.user import User
 
 
-def save_new_user(data):
+def register_new_user(data):
     user = User.objects(username=data['username']).first()
     email = User.objects(email=data['email']).first()
     if not user and not email:
@@ -14,6 +14,7 @@ def save_new_user(data):
             public_id=str(uuid.uuid4()),
             email=data['email'],
             username=data['username'],
+            admin=True,
             password=User.set_password(data['password']),
             registered_on=datetime.datetime.utcnow()
         )
@@ -28,17 +29,17 @@ def save_new_user(data):
 
 
 def get_all_users():
-    return User.query.all()
+    return list(User.objects.all())
 
 
 def get_a_user(public_id):
-    return User.query.filter_by(public_id=public_id).first()
+    return User.objects(public_id=public_id).first()
 
 
 def generate_token(user):
     try:
         # generate the auth token
-        auth_token = User.encode_auth_token(user.username)
+        auth_token = User.encode_auth_token(user.username, user.admin)
         response_object = {
             'status': 'success',
             'message': 'Successfully registered.'
