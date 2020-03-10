@@ -1,6 +1,6 @@
-from signin.main.model.user import User
+from main.model.user import User
 from flask import Response
-from signin.main.service.blacklist_service import save_token
+from main.service.blacklist_service import save_token
 
 
 class Auth:

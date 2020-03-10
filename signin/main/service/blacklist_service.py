@@ -1,4 +1,4 @@
-from signin.main.model.blacklist import BlacklistToken
+from main.model.blacklist import BlacklistToken
 from .. import db
 import datetime
 

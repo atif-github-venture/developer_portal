@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource
 
-from signin.main.util.decorator import admin_token_required
+from main.util.decorator import admin_token_required
 from ..util.dto import RegisterDto
 from ..util.dto import GetUser
 from ..service.user_service import register_new_user, get_all_users, get_a_user

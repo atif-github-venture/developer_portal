@@ -1,5 +1,4 @@
 from .. import db
-import datetime
 
 
 class BlacklistToken(db.Document):
