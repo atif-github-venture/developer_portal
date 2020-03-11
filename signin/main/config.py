@@ -36,11 +36,11 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
     MONGODB_SETTINGS = {'db': 'microdb',
-                        'host': 'localhost',
+                        'host': 'host.docker.internal',
                         'port': 27017}
     ELASTIC_APM = {
         'SERVICE_NAME': 'auth-service',
-        'SERVER_URL': 'http://localhost:8200',
+        'SERVER_URL': 'http://host.docker.internal:8200',
         'LOGGING': True
     }
 

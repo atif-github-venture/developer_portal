@@ -21,7 +21,6 @@ api = Api(blueprint,
 api.add_namespace(user_ns, path='/user')
 api.add_namespace(auth_ns)
 api.add_namespace(getuser_ns)
-
 app = create_app(os.getenv('ENV') or 'dev')
 app.register_blueprint(blueprint)
 app.app_context().push()
@@ -30,8 +29,7 @@ manager = Manager(app)
 
 @manager.command
 def run():
-    app.run()
-    # run(host=None, port=None, debug=None, load_dotenv=True, **options)
+    app.run(host='0.0.0.0', port='8080')
 
 
 if __name__ == '__main__':
