@@ -11,8 +11,8 @@ flask_bcrypt = Bcrypt()
 
 def create_app(config_name):
     app = Flask(__name__)
-    # apm = ElasticAPM(app, server_url='http://localhost:8200', service_name='auth-service', logging=True)
-    apm = ElasticAPM(app, server_url='http://apm-server:8200', service_name='auth-service', logging=True)
+    apm_dict = config_by_name[config_name].ELASTIC_APM
+    apm = ElasticAPM(app, server_url=apm_dict['SERVER_URL'], service_name=apm_dict['SERVICE_NAME'], logging=apm_dict['LOGGING'])
     app.config.from_object(config_by_name[config_name])
     db.init_app(app)
     flask_bcrypt.init_app(app)

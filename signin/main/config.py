@@ -13,6 +13,11 @@ class DevelopmentConfig(Config):
     MONGODB_SETTINGS = {'db': 'microdb',
                         'host': 'localhost',
                         'port': 27017}
+    ELASTIC_APM = {
+        'SERVICE_NAME': 'auth-service',
+        'SERVER_URL': 'http://localhost:8200',
+        'LOGGING': True
+    }
 
 
 class TestingConfig(Config):
@@ -21,10 +26,23 @@ class TestingConfig(Config):
     MONGODB_SETTINGS = {'db': 'microdb',
                         'host': 'localhost',
                         'port': 27017}
+    ELASTIC_APM = {
+        'SERVICE_NAME': 'auth-service',
+        'SERVER_URL': 'http://localhost:8200',
+        'LOGGING': True
+    }
 
 
 class ProductionConfig(Config):
     DEBUG = False
+    MONGODB_SETTINGS = {'db': 'microdb',
+                        'host': 'localhost',
+                        'port': 27017}
+    ELASTIC_APM = {
+        'SERVICE_NAME': 'auth-service',
+        'SERVER_URL': 'http://localhost:8200',
+        'LOGGING': True
+    }
 
 
 config_by_name = dict(
