@@ -18,6 +18,10 @@ class DevelopmentConfig(Config):
         'SERVER_URL': 'http://localhost:8200',
         'LOGGING': True
     }
+    CONSUL = {
+        'host': '127.0.0.1',
+        'port': '8500'
+    }
 
 
 class TestingConfig(Config):
@@ -31,6 +35,10 @@ class TestingConfig(Config):
         'SERVER_URL': 'http://localhost:8200',
         'LOGGING': True
     }
+    CONSUL = {
+        'host': '127.0.0.1',
+        'port': '8500'
+    }
 
 
 class ProductionConfig(Config):
@@ -42,6 +50,10 @@ class ProductionConfig(Config):
         'SERVICE_NAME': 'auth-service',
         'SERVER_URL': 'http://host.docker.internal:8200',
         'LOGGING': True
+    }
+    CONSUL = {
+        'host': 'host.docker.internal',
+        'port': '8500'
     }
 
 
