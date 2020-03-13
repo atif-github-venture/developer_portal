@@ -1,6 +1,6 @@
 import os
 from flask_script import Manager
-from main.util.consul import ConsulRegistration
+from main.helpers.consul import ConsulRegistration
 from main import create_app
 from flask_restplus import Api
 from flask import Blueprint
