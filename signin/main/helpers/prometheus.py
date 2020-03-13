@@ -33,3 +33,6 @@ def setup_metrics(app):
     # to be executed first
     app.after_request(record_request_data)
     app.after_request(stop_timer)
+
+# https://rollout.io/blog/monitoring-your-synchronous-python-web-applications-using-prometheus/
+# http://localhost:9090/

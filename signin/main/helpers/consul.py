@@ -37,3 +37,6 @@ class ConsulRegistration:
         c = consul.Consul(host=consult_host, port=consul_port)
         lst = c.agent.services()
         return filter_service_info(lst, service_name)
+
+
+# http://localhost:8500/
