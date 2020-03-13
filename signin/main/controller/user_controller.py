@@ -1,6 +1,5 @@
 from flask import request
 from flask_restplus import Resource
-
 from main.helpers.decorator import admin_token_required
 from ..helpers.dto import RegisterDto
 from ..helpers.dto import GetUser
