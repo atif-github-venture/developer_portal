@@ -14,7 +14,7 @@ def register_new_user(data):
             public_id=str(uuid.uuid4()),
             email=data['email'],
             username=data['username'],
-            admin=True,
+            admin=False,
             password=User.set_password(data['password']),
             registered_on=datetime.datetime.utcnow()
         )
@@ -32,8 +32,8 @@ def get_all_users():
     return list(User.objects.all())
 
 
-def get_a_user(public_id):
-    return User.objects(public_id=public_id).first()
+def get_a_user(user_name):
+    return User.objects(username=user_name).first()
 
 
 def generate_token(user):

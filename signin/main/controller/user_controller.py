@@ -22,10 +22,25 @@ class UserRegister(Resource):
         return resp
 
 
-@api.route('')
+@api.route('/all')
 class UserRegister(Resource):
-    @api.doc('list of registered users')
+    @api.doc('List of registered users')
     @admin_token_required
     @api.marshal_list_with(_getuser, envelope='data')
     def get(self):
         return get_all_users()
+
+
+@api.route('/<username>')
+@api.param('username', 'The User identifier')
+@api.response(404, 'User not found.')
+class UserRegister(Resource):
+    @api.doc('get a user')
+    @admin_token_required
+    @api.marshal_with(_getuser)
+    def get(self, username):
+        user = get_a_user(username)
+        if not user:
+            api.abort(404)
+        else:
+            return user

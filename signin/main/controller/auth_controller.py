@@ -9,24 +9,25 @@ user_auth = AuthDto.user_auth
 
 @api.route('/login')
 class UserLogin(Resource):
-    """
-        User Login Resource
-    """
     @api.doc('user signin')
     @api.expect(user_auth, validate=True)
     def post(self):
-        # get the post data
         post_data = request.json
         return Auth.login_user(data=post_data)
 
 
+@api.route('/validate')
+class LogoutAPI(Resource):
+    @api.doc('validate a user and return fresh cookie')
+    @api.response(204, None)
+    def post(self):
+        auth_header = request.headers.get('Authorization')
+        return Auth.validate_user(data=auth_header)
+
+
 @api.route('/logout')
 class LogoutAPI(Resource):
-    """
-    Logout Resource
-    """
     @api.doc('logout a user')
     def post(self):
-        # get auth token
         auth_header = request.headers.get('Authorization')
         return Auth.logout_user(data=auth_header)

@@ -15,7 +15,7 @@ class Auth:
                 if auth_token:
                     resp = Response()
                     resp.status_code = 204
-                    resp.headers.add('Set-Cookie', 'auth-token='+auth_token.decode())
+                    resp.headers.add('Set-Cookie', 'auth-token=' + auth_token.decode())
                     return resp
             else:
                 response_object = {
@@ -31,6 +31,42 @@ class Auth:
                 'message': 'Try again'
             }
             return response_object, 500
+
+    @staticmethod
+    def validate_user(data):
+        if data:
+            auth_token = data
+        else:
+            auth_token = ''
+        if auth_token:
+            resp = User.decode_auth_token(auth_token)
+            if not isinstance(resp, str):
+                msg, code = save_token(token=auth_token)
+                if code == 200:
+                    auth_token = User.encode_auth_token(resp['user'], resp['admin'])
+                    if auth_token:
+                        resp = Response()
+                        resp.status_code = 204
+                        resp.headers.add('Set-Cookie', 'auth-token=' + auth_token.decode())
+                        return resp
+                else:
+                    response_object = {
+                        'status': 'fail',
+                        'message': msg
+                    }
+                    return response_object, 500
+            else:
+                response_object = {
+                    'status': 'fail',
+                    'message': resp
+                }
+                return response_object, 401
+        else:
+            response_object = {
+                'status': 'fail',
+                'message': 'Provide a valid auth token.'
+            }
+            return response_object, 403
 
     @staticmethod
     def logout_user(data):
