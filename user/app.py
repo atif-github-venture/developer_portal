@@ -10,13 +10,13 @@ from main.controller.auth_controller import api as auth_ns
 from main.controller.user_controller import _getapi as getuser_ns
 from main.config import config_by_name
 
-blueprint = Blueprint('signin', __name__)
+blueprint = Blueprint('user', __name__)
 CONTENT_TYPE_LATEST = str('text/plain; version=0.0.4; charset=utf-8')
 
 api = Api(blueprint,
-          title='Signin API with JWT',
+          title='User signin/logout/register',
           version='1.0',
-          description='api for flask restplus web service'
+          description='user api for flask restplus web service'
           )
 config = os.getenv('ENV') or 'dev'
 api.add_namespace(user_ns, path='/user')
