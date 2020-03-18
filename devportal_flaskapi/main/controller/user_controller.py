@@ -11,7 +11,7 @@ _getapi = GetUser.api
 _getuser = GetUser.user
 
 
-@api.route('/register')
+@api.route('')
 class UserRegister(Resource):
     @api.expect(_user, validate=True)
     @api.response(201, 'User successfully registered.')
@@ -21,14 +21,12 @@ class UserRegister(Resource):
         resp = register_new_user(data=data)
         return resp
 
-
-@api.route('/all')
-class UserRegister(Resource):
     @api.doc('List of registered users')
     @admin_token_required
     @api.marshal_list_with(_getuser, envelope='data')
     def get(self):
         return get_all_users()
+
 
 
 @api.route('/<username>')

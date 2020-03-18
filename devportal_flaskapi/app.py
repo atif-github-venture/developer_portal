@@ -8,20 +8,24 @@ from flask import Blueprint, Response
 from main.controller.user_controller import api as user_ns
 from main.controller.auth_controller import api as auth_ns
 from main.controller.user_controller import _getapi as getuser_ns
+from main.controller.group_controller import api as group_ns
+from main.controller.group_controller import group as access_ns
 from main.config import config_by_name
 
-blueprint = Blueprint('user', __name__)
+blueprint = Blueprint('Developer Portal', __name__)
 CONTENT_TYPE_LATEST = str('text/plain; version=0.0.4; charset=utf-8')
 
 api = Api(blueprint,
-          title='User signin/logout/register',
+          title='Developer portal',
           version='1.0',
-          description='user api for flask restplus web service'
+          description='API to support UI interactions based on flask restplus web service'
           )
 config = os.getenv('ENV') or 'dev'
 api.add_namespace(user_ns, path='/user')
+api.add_namespace(group_ns, path='/group')
+# api.add_namespace(access_ns, path='/access')
 api.add_namespace(auth_ns)
-api.add_namespace(getuser_ns)
+# api.add_namespace(getuser_ns)
 app = create_app(config)
 app.register_blueprint(blueprint)
 app.app_context().push()

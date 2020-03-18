@@ -23,3 +23,19 @@ class AuthDto:
         'email': fields.String(required=True, description='The email address'),
         'password': fields.String(required=True, description='The user password '),
     })
+
+class GroupDto:
+    api = Namespace('group', description='Group related operations')
+    group = api.model('group', {
+        'groupname': fields.String(required=True, description='group name'),
+        'users': fields.List(fields.String, required=True, description='users belonging to group')
+    })
+
+
+class AccessDto:
+    api = Namespace('projectaccess', description='Access rules for project')
+    access = api.model('projectaccess', {
+        'projectname': fields.String(required=True, description='name of the project'),
+        'groups': fields.List(fields.String, required=True, description='List of groups having visibility to project'),
+        'users': fields.List(fields.String, required=True, description='List of users having visibility to project')
+    })
