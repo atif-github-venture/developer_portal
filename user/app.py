@@ -36,10 +36,10 @@ def metrics():
 @manager.command
 def run():
     consul_dict = config_by_name[config].CONSUL
-    c, msg = ConsulRegistration.register_service(consul_dict['host'], consul_dict['port'], 'user', 'localhost', 8080)
+    c, msg = ConsulRegistration.register_service(consul_dict['host'], consul_dict['port'], 'user', 'localhost', 80)
     if not c:
         return False, msg
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=80)
 
 
 if __name__ == '__main__':
