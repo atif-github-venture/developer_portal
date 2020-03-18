@@ -4,7 +4,7 @@ from devportal_flaskapi.main.controller.user_controller import api as user_ns
 from devportal_flaskapi.main.controller.auth_controller import api as auth_ns
 from devportal_flaskapi.main.controller.user_controller import _getapi as getuser_ns
 from devportal_flaskapi.main.controller.group_controller import api as group_ns
-from devportal_flaskapi.main.controller.group_controller import group as access_ns
+from devportal_flaskapi.main.controller.accessrule_controller import api as access_ns
 from devportal_flaskapi.main.config import config_by_name
 from flask_restplus import Api
 import prometheus_client
@@ -23,9 +23,9 @@ api = Api(blueprint,
 config = os.getenv('ENV') or 'dev'
 api.add_namespace(user_ns, path='/user')
 api.add_namespace(group_ns, path='/group')
-# api.add_namespace(access_ns, path='/access')
+api.add_namespace(access_ns, path='/accessrule')
 api.add_namespace(auth_ns)
-# api.add_namespace(getuser_ns)
+api.add_namespace(getuser_ns)
 app = create_app(config)
 app.register_blueprint(blueprint)
 app.app_context().push()

@@ -33,11 +33,13 @@ def get_group(grp):
     return Groups.objects(groupname=grp).first()
 
 
-def modify_group(data):
-    groupname = Groups.objects(groupname=data['groupname']).first()
+def modify_group(finder, data):
+    groupname = Groups.objects(groupname=finder).first()
     if not groupname:
         return "Invalid group name", 404
     else:
-        Groups.objects(groupname=data['groupname']).update(set__users=data['users'])
-        # db.Document.modify(query=Groups.objects(groupname=groupname), data)
-        return "Group updated.", 200
+        if groupname.update(set__groupname=data['groupname'], set__users=data['users']):
+            # db.Document.modify(query=Groups.objects(groupname=groupname), data)
+            return "Group updated.", 200
+        else:
+            return "Something wrong in update body", 500

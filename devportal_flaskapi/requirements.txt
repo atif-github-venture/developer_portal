@@ -6,7 +6,7 @@ flask_mongoengine==0.9.5
 Flask-PyMongo===2.3.0
 elastic_apm==5.4.3
 PyJWT==1.7.1
-Werkzeug==0.16.0
+Werkzeug==0.16.1
 blinker==1.4
 psutil==5.7.0
 python-consul==1.1.0
