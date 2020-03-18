@@ -1,6 +1,6 @@
-from main.model.user import User
+from devportal_flaskapi.main.model.user import User
 from flask import Response
-from main.service.blacklist_service import save_token
+from devportal_flaskapi.main.service.blacklist_service import save_token
 
 
 class Auth:

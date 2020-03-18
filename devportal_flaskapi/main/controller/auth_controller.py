@@ -1,6 +1,6 @@
 from flask import request
 from flask_restplus import Resource
-from main.service.auth_helper import Auth
+from devportal_flaskapi.main.service.auth_helper import Auth
 from ..helpers.dto import AuthDto
 
 api = AuthDto.api

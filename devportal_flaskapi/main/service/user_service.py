@@ -1,9 +1,9 @@
 import json
 import uuid
 import datetime
-from flask import Response, jsonify
-from main import db
-from main.model.user import User
+from flask import Response
+from devportal_flaskapi.main import db
+from devportal_flaskapi.main.model.user import User
 
 
 def register_new_user(data):
@@ -47,7 +47,7 @@ def generate_token(user):
         resp = Response()
         resp.response = json.dumps(response_object)
         resp.status_code = 200
-        resp.headers.add('Set-Cookie', 'auth-token='+auth_token.decode())
+        resp.headers.add('Set-Cookie', 'auth-token=' + auth_token.decode())
         return resp
     except Exception as e:
         response_object = {
@@ -59,4 +59,3 @@ def generate_token(user):
 
 def save_changes(data):
     db.Document.save(data)
-

@@ -1,5 +1,5 @@
-from main.model.group import Groups
-from main import db
+from devportal_flaskapi.main.model.group import Groups
+from devportal_flaskapi.main import db
 import datetime
 
 

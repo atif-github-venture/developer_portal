@@ -1,6 +1,6 @@
 from flask import request
 from flask_restplus import Resource
-from main.helpers.decorator import admin_token_required
+from devportal_flaskapi.main.helpers.decorator import admin_token_required
 from ..helpers.dto import RegisterDto
 from ..helpers.dto import GetUser
 from ..service.user_service import register_new_user, get_all_users, get_a_user
@@ -26,7 +26,6 @@ class UserRegister(Resource):
     @api.marshal_list_with(_getuser, envelope='data')
     def get(self):
         return get_all_users()
-
 
 
 @api.route('/<username>')

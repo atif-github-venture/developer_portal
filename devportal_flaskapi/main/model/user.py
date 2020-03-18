@@ -6,7 +6,6 @@ import jwt
 
 
 class User(db.Document):
-
     # id = db.StringField(primary_key=True, autoincrement=True)
     email = db.StringField(unique=True, nullable=False)
     public_id = db.StringField(max_length=100, unique=True)

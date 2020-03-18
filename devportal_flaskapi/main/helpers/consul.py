@@ -27,5 +27,4 @@ class ConsulRegistration:
         serv = c.agent.services()[service_name]
         return serv['Address'], serv['Port']
 
-
 # http://localhost:8500/

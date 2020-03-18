@@ -9,6 +9,7 @@ class RegisterDto:
         'password': fields.String(required=True, description='user password')
     })
 
+
 class GetUser:
     api = Namespace('getuser', description='get user list')
     user = api.model('getuser', {
@@ -23,6 +24,7 @@ class AuthDto:
         'email': fields.String(required=True, description='The email address'),
         'password': fields.String(required=True, description='The user password '),
     })
+
 
 class GroupDto:
     api = Namespace('group', description='Group related operations')

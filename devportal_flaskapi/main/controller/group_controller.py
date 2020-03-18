@@ -1,6 +1,6 @@
 from flask import request
 from flask_restplus import Resource
-from main.service.group_service import create_group, get_all_groups, get_group, modify_group
+from devportal_flaskapi.main.service.group_service import create_group, get_all_groups, get_group, modify_group
 from ..helpers.dto import GroupDto
 
 api = GroupDto.api
