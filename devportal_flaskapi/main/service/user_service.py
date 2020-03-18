@@ -18,8 +18,10 @@ def register_new_user(data):
             password=User.set_password(data['password']),
             registered_on=datetime.datetime.utcnow()
         )
-        save_changes(new_user)
-        return generate_token(new_user)
+        if save_changes(new_user):
+            return generate_token(new_user)
+        else:
+            return 'Something went wrong!', 500
     else:
         response_object = {
             'status': 'fail',
@@ -58,4 +60,4 @@ def generate_token(user):
 
 
 def save_changes(data):
-    db.Document.save(data)
+    return db.Document.save(data)

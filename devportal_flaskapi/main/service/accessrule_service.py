@@ -4,7 +4,7 @@ import datetime
 
 
 def save_changes(data):
-    db.Document.save(data)
+    return db.Document.save(data)
 
 
 def create_accessrule(data):
@@ -16,8 +16,10 @@ def create_accessrule(data):
             users=data['users'],
             registered_on=datetime.datetime.utcnow()
         )
-        save_changes(new_accessrule)
-        return "Access rule created.", 200
+        if save_changes(new_accessrule):
+            return "Access rule created.", 200
+        else:
+            return 'Something went wrong!', 500
     else:
         response_object = {
             'status': 'fail',
