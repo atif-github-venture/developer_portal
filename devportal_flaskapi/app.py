@@ -19,7 +19,7 @@ CONTENT_TYPE_LATEST = str('text/plain; version=0.0.4; charset=utf-8')
 api = Api(blueprint,
           title='Developer portal',
           version='1.0',
-          description='API to support UI interactions based on flask restplus web service'
+          description='API to support Swagger UI interactions based on flask restplus web service'
           )
 config = os.getenv('ENV') or 'dev'
 api.add_namespace(user_ns, path='/user')

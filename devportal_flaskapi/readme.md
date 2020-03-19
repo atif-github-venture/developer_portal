@@ -10,3 +10,6 @@ docker run -e "env=prod" -p 80:80 -it devportal_flaskapi
 
 #To run from CLI
 ENV=prod python3 app.py run
+
+
+https://www.datacamp.com/community/tutorials/web-development-django
