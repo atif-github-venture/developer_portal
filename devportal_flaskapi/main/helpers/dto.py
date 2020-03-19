@@ -54,6 +54,6 @@ class SwaggerDto:
         'tags': fields.List(fields.String, required=True,
                             description='List of tags to identify the api path for the given swagger'),
         'status': fields.String(required=True, description='active/deployed/deprecated'),
-        'dependency': fields.List(fields.Raw, required=True, description='swagger dependency definition'),
-        'swaggerobject': fields.List(fields.Raw, required=True, description='swagger json body')
+        'dependency': fields.String(required=True, description='swagger dependency definition'),
+        'swaggerobject': fields.String(required=True, description='swagger json body')
     })

@@ -32,7 +32,7 @@ def create_swagger(data):
 
 
 def get_swagger(path):
-    return Swagger.objects(path=path).first()
+    return Swagger.objects(**path).first()
 
 
 def modify_swagger(finder, data):
@@ -40,8 +40,9 @@ def modify_swagger(finder, data):
     if not swaggerpath:
         return "Invalid swagger path", 404
     else:
-        if swaggerpath.update(set__projectname=data['projectname'], set__path=data['path']):
-            # db.Document.modify(query=Groups.objects(groupname=groupname), data)
-            return "Group updated.", 200
+        if swaggerpath.update(set__projectname=data['projectname'], set__path=data['path'], set__tags=data['tags'],
+                              set__status=data['status'], set__swaggerobject=str(data['swaggerobject']),
+                              set__dependency=str(data['dependency'])):
+            return "Swagger updated!", 200
         else:
             return "Something wrong in update body", 500
