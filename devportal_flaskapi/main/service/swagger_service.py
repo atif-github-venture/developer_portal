@@ -46,3 +46,14 @@ def modify_swagger(finder, data):
             return "Swagger updated!", 200
         else:
             return "Something wrong in update body", 500
+
+
+def modify_swagger_status(finder, status):
+    swaggerpath = Swagger.objects(path=finder).first()
+    if not swaggerpath:
+        return "Invalid swagger path", 404
+    else:
+        if swaggerpath.update(set__status=status):
+            return "Swagger updated for status!", 200
+        else:
+            return "Something wrong in update body", 500

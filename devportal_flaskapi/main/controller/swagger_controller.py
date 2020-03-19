@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from flask_restplus import Resource
-from devportal_flaskapi.main.service.swagger_service import create_swagger, get_swagger, modify_swagger
+from devportal_flaskapi.main.service.swagger_service import create_swagger, get_swagger, modify_swagger, \
+    modify_swagger_status
 from ..helpers.dto import SwaggerDto
 from urllib.parse import parse_qs
 
@@ -28,6 +29,21 @@ class SwaggerPost(Resource):
             api.abort(404)
         else:
             return swaggerdetails
+
+
+@api.route('/status/<swaggerpath>/<status>')
+@api.param('swaggerpath', 'status', 'The swagger identifier and status')
+@api.response(200, 'Swagger updated.')
+@api.response(404, 'Swagger not found.')
+class ModifySwaggerStatus(Resource):
+    @api.doc('Modify a swagger status for a path')
+    def put(self, swaggerpath, status):
+        swaggerpath = swaggerpath.replace('#', '/')
+        ms = modify_swagger_status(swaggerpath, status)
+        if not ms:
+            api.abort(404)
+        else:
+            return ms
 
 
 @api.route('/<swaggerpath>')
