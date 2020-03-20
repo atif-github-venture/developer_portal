@@ -1,0 +1,35 @@
+{% extends "ui/base.html" %}
+{% block body_block %}
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>Access Rules</h2>
+        <table class="table is-fullwidth is-striped is-bordered" border="1">
+            <thead>
+            <tr>
+                <th>Project</th>
+                <th>Groups</th>
+                <th>Users</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ac in accessrules %}
+            <tr>
+                <th>{{ ac.projectname }}</th>
+                <td>
+                    {% for group in ac.groups %}
+                    <li>{{ group }}</li>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for user in ac.users %}
+                    <li>{{ user }}</li>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

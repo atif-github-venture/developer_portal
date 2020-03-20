@@ -3,15 +3,31 @@
 <div class="container">
     <div class="jumbotron">
 <!--        {% if registered %}-->
-        <h1>Thank you for registering!</h1>
+        <h2>Thank you for registering!</h2>
 <!--        {% else %}-->
-        <h1>Register Here</h1>
-        <h3>Just fill out the form.</h3>
+        <h2>Register Here</h2>
+        <h3>Fill out this form. Its that simple!</h3>
         <form enctype="multipart/form-data" method="POST">
-            {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-            <input type="submit" name="" value="Register">
+            <table border="1">
+                <tr>
+                    <th>E-mail address</th>
+                    <td>
+                        <input type="text" name="email" size="30">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Username</th>
+                    <td>
+                        <input type="text" name="username" size="30">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Password</th>
+                    <td><input type="text" name="email" size="30"></td>
+                </tr>
+            </table>
+            <br>
+            <input type="submit" name="" value="Register me!">
         </form>
 
 <!--        {% endif %}-->

@@ -1,0 +1,29 @@
+{% extends "ui/base.html" %}
+{% block body_block %}
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>Groups</h2>
+        <table class="table is-fullwidth is-striped is-bordered" border="1">
+            <thead>
+            <tr>
+                <th>Groups</th>
+                <th>Users</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for group in groups %}
+            <tr>
+                <th>{{ group.groupname }}</th>
+                <td>
+                    {% for user in group.users %}
+                    <li>{{ user }}</li>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

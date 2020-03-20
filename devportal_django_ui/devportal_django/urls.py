@@ -23,7 +23,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('ui.urls')),
-    path('index/', include('ui.urls')),
+    path('logout/', include('ui.urls')),
     path('register/', include('ui.urls')),
     path('login/', include('ui.urls')),
+    path('index/', include('ui.urls')),
+    path('group/', include('ui.urls')),
+    path('access/', include('ui.urls')),
 ]
