@@ -1,8 +1,7 @@
 from django import forms
-from .models import Feedback
 
 
-class GroupForm(forms.ModelForm):
-    class Meta:
-        model = Feedback
-        fields = '__all__'
+class RegistrationForm(forms.Form):
+    email = forms.EmailField(max_length=75, help_text="Name of the sender")
+    username = forms.CharField(max_length=75)
+    password = forms.CharField(max_length=75)

@@ -14,7 +14,7 @@ _getuser = GetUser.user
 @api.route('')
 class UserRegister(Resource):
     @api.expect(_user, validate=True)
-    @api.response(201, 'User successfully registered.')
+    @api.response(201, 'User successfully registered. Please log in.')
     @api.doc('Register a new user')
     def post(self):
         data = request.json
