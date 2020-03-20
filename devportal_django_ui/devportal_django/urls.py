@@ -29,5 +29,5 @@ urlpatterns = [
     path('index/', include('ui.urls')),
     path('group/', include('ui.urls')),
     path('access/', include('ui.urls')),
-    path('home/', include('ui.urls')),
+    path('dashboard/', include('ui.urls')),
 ]

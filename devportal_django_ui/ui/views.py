@@ -37,7 +37,7 @@ def login(request):
             if msg != None:
                 messages.info(request, msg, '')
                 return redirect('login')
-            return render(request, 'ui/home.html')
+            return render(request, 'ui/dashboard.html')
     else:
         form = LoginForm()
     return render(request, 'ui/login.html', {'form': form})
@@ -50,9 +50,10 @@ def group(request):
 def access(request):
     return render(request, 'ui/access.html', {'accessrules': get_accessrules()})
 
-def home(request):
-    # logout(request)
-    return render(request, 'ui/index.html')
+
+def dashboard(request):
+    return render(request, 'ui/dashboard.html')
+
 
 def logout(request):
     # logout(request)
