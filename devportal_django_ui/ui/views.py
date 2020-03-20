@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.template import engines
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from .forms import RegistrationForm, FeedbackForm
-from .services import get_groups, get_accessrules, post_registration
+from .forms import RegistrationForm, LoginForm
+from .services import get_groups, get_accessrules, post_registration, post_login
 from django.contrib import messages
 
 
@@ -23,7 +23,24 @@ def register(request):
                                     form.cleaned_data['password'])
             messages.info(request, msg)
             return redirect('register')
-    return render(request, 'ui/registration.html')
+    else:
+        form = RegistrationForm()
+    return render(request, 'ui/registration.html', {'form': form})
+
+
+# @login_required
+def login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            msg = post_login(form.cleaned_data['email'], form.cleaned_data['password'])
+            if msg != None:
+                messages.info(request, msg, '')
+                return redirect('login')
+            return render(request, 'ui/home.html')
+    else:
+        form = LoginForm()
+    return render(request, 'ui/login.html', {'form': form})
 
 
 def group(request):
@@ -33,30 +50,13 @@ def group(request):
 def access(request):
     return render(request, 'ui/access.html', {'accessrules': get_accessrules()})
 
+def home(request):
+    # logout(request)
+    return render(request, 'ui/index.html')
 
 def logout(request):
     # logout(request)
     return HttpResponseRedirect(reverse('base'))
-
-
-# @login_required
-def login(request):
-    if request.method == 'POST':
-        f = FeedbackForm(request.POST)
-
-        if f.is_valid():
-            name = f.cleaned_data['name']
-            sender = f.cleaned_data['email']
-            subject = "You have a new Feedback from {}:{}".format(name, sender)
-            # message = "Subject: {}\n\nMessage: {}".format(f.cleaned_data['subject'], f.cleaned_data['message'])
-            # mail_admins(subject, message)
-            #
-            # f.save()
-            # messages.add_message(request, messages.INFO, 'Feedback Submitted.')
-            return redirect('login')
-    else:
-        f = FeedbackForm()
-    return render(request, 'ui/login.html', {'form': f})
 
 # def about(request):
 #     django_engine = engines['django']

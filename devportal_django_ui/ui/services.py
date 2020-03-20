@@ -31,3 +31,18 @@ def post_registration(email, user, password):
     resp.close()
     msg = 'Message: ' + resp.json()['message']
     return msg
+
+
+def post_login(email, password):
+    url = "http://127.0.0.1:80/auth/login"
+    payload = {
+        'email': email,
+        'password': password
+    }
+    headers = {'Content-Type': 'application/json'}
+    resp = requests.post(url, data=json.dumps(payload), headers=headers)
+    resp.close()
+    msg = None
+    if resp.status_code != 204:
+        msg = 'Message: ' + resp.json()['message']
+    return msg

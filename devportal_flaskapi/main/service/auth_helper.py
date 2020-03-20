@@ -19,15 +19,15 @@ class Auth:
                     return resp
             else:
                 response_object = {
-                    'status': 'fail',
-                    'message': 'email or password does not match.'
+                    'status': 'Fail',
+                    'message': 'Email or password does not match.'
                 }
                 return response_object, 401
 
         except Exception as e:
             print(e)
             response_object = {
-                'status': 'fail',
+                'status': 'Fail',
                 'message': 'Try again'
             }
             return response_object, 500
@@ -51,19 +51,19 @@ class Auth:
                         return resp
                 else:
                     response_object = {
-                        'status': 'fail',
+                        'status': 'Fail',
                         'message': msg
                     }
                     return response_object, 500
             else:
                 response_object = {
-                    'status': 'fail',
+                    'status': 'Fail',
                     'message': resp
                 }
                 return response_object, 401
         else:
             response_object = {
-                'status': 'fail',
+                'status': 'Fail',
                 'message': 'Provide a valid auth token.'
             }
             return response_object, 403
@@ -81,13 +81,13 @@ class Auth:
                 return save_token(token=auth_token)
             else:
                 response_object = {
-                    'status': 'fail',
+                    'status': 'Fail',
                     'message': resp
                 }
                 return response_object, 401
         else:
             response_object = {
-                'status': 'fail',
+                'status': 'Fail',
                 'message': 'Provide a valid auth token.'
             }
             return response_object, 403
@@ -111,13 +111,13 @@ class Auth:
                 }
                 return response_object, 200
             response_object = {
-                'status': 'fail',
+                'status': 'Fail',
                 'message': resp
             }
             return response_object, 401
         else:
             response_object = {
-                'status': 'fail',
+                'status': 'Fail',
                 'message': 'Provide a valid auth token.'
             }
             return response_object, 401

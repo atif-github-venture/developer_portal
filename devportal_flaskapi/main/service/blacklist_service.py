@@ -9,13 +9,13 @@ def save_token(token):
         # insert the token
         db.Document.save(blacklist_token)
         response_object = {
-            'status': 'success',
+            'status': 'Success',
             'message': 'Successfully logged out.'
         }
         return response_object, 200
     except Exception as e:
         response_object = {
-            'status': 'fail',
+            'status': 'Fail',
             'message': e
         }
         return response_object, 400
