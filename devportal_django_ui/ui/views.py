@@ -5,6 +5,7 @@ from django.urls import reverse
 from .forms import RegistrationForm, LoginForm
 from .services import get_groups, get_accessrules, post_registration, post_login, post_logout
 from django.contrib import messages
+import ast
 
 
 def getbody(auth, adm):
@@ -20,11 +21,11 @@ def determine(req):
     except:
         token = None
     try:
-        admin = bool(req.COOKIES['admin'])
+        admin = ast.literal_eval(req.COOKIES['admin'])
     except:
         admin = False
     try:
-        authstatus = bool(req.COOKIES['authenticated'])
+        authstatus = ast.literal_eval(req.COOKIES['authenticated'])
     except:
         authstatus = False
     return token, admin, authstatus
@@ -59,7 +60,7 @@ def login(request):
                 return redirect('login')
             else:
                 token = resp.json()['token']
-                admin = bool(resp.json()['admin'])
+                admin = resp.json()['admin']
                 messages.info(request, 'You have successfully logged in!', '')
                 response = render(request, 'ui/dashboard.html', getbody(True, admin))
                 response.set_cookie(key='token', value=token)
