@@ -8,6 +8,15 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgba(15, 11, 7, 0.73);
+        color: white;
+        text-align: center;
+    }
     .submenu {
         position: absolute;
         left: 0;
@@ -56,15 +65,25 @@
     </div>
 </nav>
 {% if messages %}
+<div class="container">
+    <div class="jumbotron">
+        <div class="content">
 <ul class="messages">
     {% for message in messages %}
     <li>{{ message }}</li>
     {% endfor %}
 </ul>
 {% endif %}
+        </div>
+    </div>
+</div>
 <div class="container">
     {% block body_block %}
     {% endblock %}
+</div>
+
+<div class="footer">
+    <p>Managed by MGT</p>
 </div>
 </body>
 </html>
