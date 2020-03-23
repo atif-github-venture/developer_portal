@@ -34,7 +34,8 @@
         <ul class="nav navbar-nav">
             {# Dev Portal Home Link / Admin Link / Register Link#}
             <li><a class="navbar-brand" href="{% url 'index' %}">Developer Portal</a></li>
-            <li><a class="navbar-link" href="{% url 'register' %}">Register</a></li>
+            {% if authenticated == True %}
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li class="menu__item">
                 <a class="menu__link">Admin</a>
                 <ul class="submenu">
@@ -44,14 +45,21 @@
                     </li>
                 </ul>
             </li>
-            <!--            {% if user.is_authenticated %}-->
             <li><a href="{% url 'logout' %}">Logout</a></li>
-            <!--            {% else %}-->
+            {% else %}
+            <li><a class="navbar-link" href="{% url 'register' %}">Register</a></li>
             <li><a class="navbar-link" href="{% url 'login' %}">Login</a></li>
-            <!--            {% endif %}-->
+            {% endif %}
         </ul>
     </div>
 </nav>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <div class="container">
     {% block body_block %}
     {% endblock %}

@@ -1,5 +1,7 @@
+import json
+
 from devportal_flaskapi.main.model.user import User
-from flask import Response
+from flask import Response, make_response
 from devportal_flaskapi.main.service.blacklist_service import save_token
 
 
@@ -13,10 +15,7 @@ class Auth:
             if user and user.check_password(data.get('password')):
                 auth_token = User.encode_auth_token(user.username, user.admin)
                 if auth_token:
-                    resp = Response()
-                    resp.status_code = 204
-                    resp.headers.add('Set-Cookie', 'auth-token=' + auth_token.decode())
-                    return resp
+                    return {'admin': user.admin, 'token' : auth_token.decode()}, 200
             else:
                 response_object = {
                     'status': 'Fail',
