@@ -17,7 +17,7 @@
                 <th>{{ group.groupname }}</th>
                 <td>
                     {% for user in group.users %}
-                    <li>{{ user }}</li>
+                    {{ user }}<br>
                     {% endfor %}
                 </td>
             </tr>
@@ -26,4 +26,58 @@
         </table>
     </div>
 </div>
+<div class="container">
+    <div class="jumbotron">
+        <label for="groupname">Search for group name:</label>
+        <br>
+        <form action="" method="GET">
+            <input type="text" id="groupname" name="groupname">
+            <input type="submit" value="Search">
+        </form>
+        <br>
+        <form id="form1" runat="server">
+            <input id="btnAdd" type="button" value="add" onclick="AddTextBox()" />
+            <br />
+            <br />
+
+            <div id="TextBoxContainer">
+                <!--Textboxes will be added here -->
+                {% for form in formset %}
+                <input name = "DynamicTextBox" type="text" value={{form}}>
+                <br>
+                {% endfor %}
+            </div>
+            <br />
+            <input type="submit" formmethod="POST" name="Save Group" value="Save Group"> <input type="submit" formmethod="POST" name="Cancel" value="Cancel">
+        </form>
+
+    </div>
+</div>
+<script type="text/javascript">
+    function GetDynamicTextBox(value){
+        return '<input name = "DynamicTextBox" type="text" value = "' + value + '" />' +
+            '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" />'
+    }
+    function AddTextBox() {
+        var div = document.createElement('DIV');
+        div.innerHTML = GetDynamicTextBox("");
+        document.getElementById("TextBoxContainer").appendChild(div);
+    }
+
+    function RemoveTextBox(div) {
+        document.getElementById("TextBoxContainer").removeChild(div.parentNode);
+    }
+
+    function RecreateDynamicTextboxes() {
+        var values = eval('<%=Values%>');
+        if (values != null) {
+            var html = "";
+            for (var i = 0; i < values.length; i++) {
+                html += "<div>" + GetDynamicTextBox(values[i]) + "</div>";
+            }
+            document.getElementById("TextBoxContainer").innerHTML = html;
+        }
+    }
+    window.onload = RecreateDynamicTextboxes;
+</script>
 {% endblock %}

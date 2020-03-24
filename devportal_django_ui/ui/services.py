@@ -19,6 +19,12 @@ def get_accessrules(token):
     return accessruleinfo_list
 
 
+def get_group_details(token, searchstr):
+    url = "http://127.0.0.1:80/group/"+searchstr
+    resp = requests.get(url, headers={
+        'Authorization': token})
+    return resp
+
 def post_registration(email, user, password):
     url = "http://127.0.0.1:80/user"
     payload = {
@@ -42,6 +48,17 @@ def post_login(email, password):
     headers = {'Content-Type': 'application/json'}
     resp = requests.post(url, data=json.dumps(payload), headers=headers)
     resp.close()
+    return resp
+
+
+def put_groupmodify(token, searchstr, userlist):
+    url = "http://127.0.0.1:80/group/"+searchstr
+    payload = {
+        'groupname': searchstr,
+        'users': userlist
+    }
+    resp = requests.put(url, data=json.dumps(payload), headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
     return resp
 
 

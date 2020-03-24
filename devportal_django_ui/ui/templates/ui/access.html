@@ -18,12 +18,12 @@
                 <th>{{ ac.projectname }}</th>
                 <td>
                     {% for group in ac.groups %}
-                    <li>{{ group }}</li>
+                    {{ group }}<br>
                     {% endfor %}
                 </td>
                 <td>
                     {% for user in ac.users %}
-                    <li>{{ user }}</li>
+                    {{ user }}<br>
                     {% endfor %}
                 </td>
             </tr>

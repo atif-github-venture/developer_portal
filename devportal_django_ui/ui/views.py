@@ -1,9 +1,11 @@
+from django.forms import formset_factory
 from django.shortcuts import render, redirect
 from django.template import engines
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import RegistrationForm, LoginForm
-from .services import get_groups, get_accessrules, post_registration, post_login, post_logout
+from .services import get_groups, get_accessrules, post_registration, post_login, post_logout, get_group_details, \
+    put_groupmodify
 from django.contrib import messages
 import ast
 
@@ -75,8 +77,38 @@ def login(request):
 
 
 def group(request):
+    users_lst = None
+    if request.method == 'GET':
+        try:
+            if request.GET['groupname'] != '':
+                resp = get_group_details(request.COOKIES['token'], request.GET['groupname'])
+                if resp.status_code == 200:
+                    users_lst = list(resp.json()['users'])
+                else:
+                    msg = 'Message: Search failed!'
+                    messages.info(request, msg, '')
+                    return redirect('group')
+        except:
+            pass
+    elif request.method == 'POST':
+        if "Cancel" in request.POST:
+            pass
+        elif "Save Group" in request.POST:
+            lst = request.body.decode('UTF-8').split('&')
+            users = []
+            for i in range(len(lst)-1):
+                users.append(lst[i].split('=')[1])
+            users = [i for i in users if i]
+            resp = put_groupmodify(request.COOKIES['token'], request.GET['groupname'], users)
+            if resp.status_code != 200:
+                msg = 'Message: ' + resp.json()['message']
+                messages.info(request, msg, '')
+            else:
+                msg = 'Message: ' + resp.json()
+                messages.info(request, msg, '')
+
     to, ad, au = determine(request)
-    return render(request, 'ui/group.html', {'groups': get_groups(request.COOKIES['token']), 'authenticated': au, 'admin': ad})
+    return render(request, 'ui/group.html', {'groups': get_groups(request.COOKIES['token']), 'authenticated': au, 'admin': ad, 'formset': users_lst})
 
 
 def access(request):
