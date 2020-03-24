@@ -85,7 +85,7 @@ def group(request):
                 if resp.status_code == 200:
                     users_lst = list(resp.json()['users'])
                 else:
-                    msg = 'Message: Search failed!'
+                    msg = 'Search failed!'
                     messages.info(request, msg, '')
                     return redirect('group')
         except:
@@ -101,10 +101,10 @@ def group(request):
             users = [i for i in users if i]
             resp = put_groupmodify(request.COOKIES['token'], request.GET['groupname'], users)
             if resp.status_code != 200:
-                msg = 'Message: ' + resp.json()['message']
+                msg = resp.json()['message']
                 messages.info(request, msg, '')
             else:
-                msg = 'Message: ' + resp.json()
+                msg = resp.json()
                 messages.info(request, msg, '')
 
     to, ad, au = determine(request)
@@ -124,7 +124,7 @@ def dashboard(request):
 def logout(request):
     resp = post_logout(request.COOKIES['token'])
     if resp.status_code == 200:
-        msg = 'Message: ' + resp.json()['message']
+        msg = resp.json()['message']
         messages.info(request, msg, '')
         response = render(request, 'ui/index.html', getbody(False, False))
         response.delete_cookie(key='token')
@@ -132,7 +132,7 @@ def logout(request):
         response.delete_cookie(key='authenticated')
         return response
     else:
-        msg = 'Message: Something went wrong while logging out'
+        msg = 'Something went wrong while logging out'
         messages.info(request, msg, '')
         to, ad, au = determine(request)
         return render(request, 'ui/logout.html', {'authenticated': au, 'admin': ad})

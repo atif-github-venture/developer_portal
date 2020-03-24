@@ -8,12 +8,21 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <style>
+    .fixed-nav-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+        height: 50px;
+        background-color: #00a087;
+    }
     .footer {
         position: fixed;
         left: 0;
         bottom: 0;
         width: 100%;
-        background-color: rgba(15, 11, 7, 0.73);
+        background-color: #00a087;
         color: white;
         text-align: center;
     }
@@ -36,13 +45,22 @@
         background: #D3D3D3;
         clip: auto;
     }
+    body {
+        background-color: black;
+    }
+    a {
+        color: white;
+        display:inline-block;
+        text-decoration: none;
+        font-weight: 400;
+    }
 </style>
 <body>
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="fixed-nav-bar">
     <div class="container">
         <ul class="nav navbar-nav">
             {# Dev Portal Home Link / Admin Link / Register Link#}
-            <li><a class="navbar-brand" href="{% url 'index' %}">Developer Portal</a></li>
+            <li><a class="navbar-brand" href="{% url 'index' %}"><b>Developer Portal</b></a></li>
             {% if authenticated == True %}
             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
             {% if admin == True %}
@@ -50,8 +68,8 @@
                 <a class="menu__link">Admin</a>
                 <ul class="submenu">
                     <li class="submenu__item">
-                        <a class="navbar-link" href="{% url 'group' %}">Groups</a>
-                        <a class="navbar-link" href="{% url 'access' %}">Access</a>
+                        <a class="navbar-link" href="{% url 'group' %}"><b>Groups</b></a>
+                        <a class="navbar-link" href="{% url 'access' %}"><b>Access</b></a>
                     </li>
                 </ul>
             </li>
@@ -64,15 +82,16 @@
         </ul>
     </div>
 </nav>
+<br><br><br><br>
 {% if messages %}
 <div class="container">
     <div class="jumbotron">
         <div class="content">
-<ul class="messages">
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
+            <ul class="messages">
+                {% for message in messages %}
+                <strong>Message!</strong> {{ message }}
+                {% endfor %}
+            </ul>
 {% endif %}
         </div>
     </div>
@@ -83,7 +102,7 @@
 </div>
 
 <div class="footer">
-    <p>Managed by MGT</p>
+    <p><b>Managed by M. G. T.</b></p>
 </div>
 </body>
 </html>
