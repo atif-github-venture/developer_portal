@@ -1,3 +1,5 @@
+import json
+
 from django.forms import formset_factory
 from django.shortcuts import render, redirect
 from django.template import engines
@@ -136,3 +138,9 @@ def logout(request):
         messages.info(request, msg, '')
         to, ad, au = determine(request)
         return render(request, 'ui/logout.html', {'authenticated': au, 'admin': ad})
+
+
+def swagger(request):
+    with open('/Users/aahmed/Documents/FE_GIT/developer_portal/devportal_django_ui/ui/j.json') as json_file:
+        abc = json.load(json_file)
+    return render(request, 'ui/swagger_embed.html', {'jcon': json.dumps(abc)})
