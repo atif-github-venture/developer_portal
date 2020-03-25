@@ -7,6 +7,6 @@ class Swagger(db.Document):
     path = db.StringField(unique=True, nullable=False)
     tags = db.ListField(nullable=False)
     status = db.StringField(nullable=False)
-    dependency = db.StringField(nullable=False)
+    dependency = db.ListField(nullable=False)
     swaggerobject = db.StringField(nullable=False)
     registered_on = db.DateTimeField(nullable=False)

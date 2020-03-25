@@ -8,6 +8,9 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <style>
+    #textcolor {
+        color: #467ab2;
+    }
     .fixed-nav-bar {
         position: fixed;
         top: 0;
@@ -74,11 +77,19 @@
                 </ul>
             </li>
             {% endif %}
+            <li class="menu__item">
+                <a class="menu__link">Swagger</a>
+                <ul class="submenu">
+                    <li class="submenu__item">
+                        <a class="navbar-link" href="{% url 'swaggerview' %}"><b>View</b></a>
+                        <a class="navbar-link" href="{% url 'swaggeredit' %}"><b>Add/Edit</b></a>
+                    </li>
+                </ul>
+            </li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else %}
             <li><a class="navbar-link" href="{% url 'register' %}">Register</a></li>
             <li><a class="navbar-link" href="{% url 'login' %}">Login</a></li>
-            <li><a class="navbar-link" href="{% url 'swagger' %}">Swagger</a></li>
             {% endif %}
         </ul>
     </div>

@@ -11,9 +11,9 @@ swagger = SwaggerDto.swagger
 
 @api.route('')
 class SwaggerPost(Resource):
-    @api.doc('group of users')
+    @api.doc('Swagger Info')
     # @api.expect(swagger, validate=True)
-    @api.response(200, 'Group created.')
+    @api.response(200, 'Swagger information saved.')
     def post(self):
         post_data = request.json
         return create_swagger(data=post_data)

@@ -14,13 +14,13 @@ def create_swagger(data):
             projectname=data['projectname'],
             path=data['path'],
             tags=data['tags'],
-            dependency=str(data['dependency']),
+            dependency=data['dependency'],
             swaggerobject=str(data['swaggerobject']),
             status=data['status'],
             registered_on=datetime.datetime.utcnow()
         )
         if save_changes(new_swagger):
-            return "Swagger info committed.", 200
+            return "Swagger information saved.", 200
         else:
             return "Something went wrong!", 500
     else:

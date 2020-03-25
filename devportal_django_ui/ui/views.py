@@ -5,9 +5,9 @@ from django.shortcuts import render, redirect
 from django.template import engines
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, AddSwaggerForm
 from .services import get_groups, get_accessrules, post_registration, post_login, post_logout, get_group_details, \
-    put_groupmodify
+    put_groupmodify, post_swagger
 from django.contrib import messages
 import ast
 
@@ -59,7 +59,7 @@ def login(request):
         if form.is_valid():
             resp = post_login(form.cleaned_data['email'], form.cleaned_data['password'])
             if resp.status_code != 200:
-                msg = 'Message: ' + resp.json()['message']
+                msg = resp.json()['message']
                 messages.info(request, msg, '')
                 return redirect('login')
             else:
@@ -98,7 +98,7 @@ def group(request):
         elif "Save Group" in request.POST:
             lst = request.body.decode('UTF-8').split('&')
             users = []
-            for i in range(len(lst)-1):
+            for i in range(len(lst) - 1):
                 users.append(lst[i].split('=')[1])
             users = [i for i in users if i]
             resp = put_groupmodify(request.COOKIES['token'], request.GET['groupname'], users)
@@ -110,12 +110,15 @@ def group(request):
                 messages.info(request, msg, '')
 
     to, ad, au = determine(request)
-    return render(request, 'ui/group.html', {'groups': get_groups(request.COOKIES['token']), 'authenticated': au, 'admin': ad, 'formset': users_lst})
+    return render(request, 'ui/group.html',
+                  {'groups': get_groups(request.COOKIES['token']), 'authenticated': au, 'admin': ad,
+                   'formset': users_lst})
 
 
 def access(request):
     to, ad, au = determine(request)
-    return render(request, 'ui/access.html', {'accessrules': get_accessrules(request.COOKIES['token']), 'authenticated': au, 'admin': ad})
+    return render(request, 'ui/access.html',
+                  {'accessrules': get_accessrules(request.COOKIES['token']), 'authenticated': au, 'admin': ad})
 
 
 def dashboard(request):
@@ -140,7 +143,40 @@ def logout(request):
         return render(request, 'ui/logout.html', {'authenticated': au, 'admin': ad})
 
 
-def swagger(request):
+def swaggerview(request):
+    to, ad, au = determine(request)
     with open('/Users/aahmed/Documents/FE_GIT/developer_portal/devportal_django_ui/ui/j.json') as json_file:
         abc = json.load(json_file)
-    return render(request, 'ui/swagger_embed.html', {'jcon': json.dumps(abc)})
+    return render(request, 'ui/swagger_embed.html', {'jcon': json.dumps(abc), 'authenticated': au, 'admin': ad})
+
+
+def swaggeredit(request):
+    to, ad, au = determine(request)
+    add = False
+    edit = False
+    form = None
+    if request.method == 'GET':
+        if "Add" in request.GET:
+            add = True
+            form = AddSwaggerForm()
+        elif "Edit" in request.GET:
+            edit = True
+    elif request.method == 'POST':
+        if "Save" in request.POST:
+            form = AddSwaggerForm(request.POST)
+            if form.is_valid():
+                tags = form.cleaned_data['tags'].split(',')
+                dependency = form.cleaned_data['dependency'].split(',')
+                resp = post_swagger(to, form.cleaned_data['projectname'], form.cleaned_data['path'],
+                                    form.cleaned_data['status'], dependency, tags, form.cleaned_data['swaggerobject'])
+                if resp.status_code != 200:
+                    msg = resp.json()['message']
+                    messages.info(request, msg, '')
+                    return render(request, 'ui/swaggeredit.html', {'form': form, 'authenticated': au, 'admin': ad,
+                                                                   'add': True})
+                else:
+                    msg = resp.json()
+                    messages.info(request, msg, '')
+                    return render(request, 'ui/swaggeredit.html', {'authenticated': au, 'admin': ad})
+    return render(request, 'ui/swaggeredit.html',
+                  {'authenticated': au, 'admin': ad, 'add': add, 'edit': edit, 'form': form})

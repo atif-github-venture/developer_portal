@@ -63,6 +63,35 @@ def put_groupmodify(token, searchstr, userlist):
     return resp
 
 
+def post_swagger(token, projname, path, status, dep, tags, swagobj):
+    url = "http://127.0.0.1:80/swagger"
+    payload = {
+        "projectname": projname,
+        "path": path,
+        "tags": tags,
+        "status": status,
+        "swaggerobject": swagobj,
+        "dependency": dep
+    }
+    resp = requests.post(url, data=json.dumps(payload), headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+def put_swagger(token, projname, path, status, dep, tags, swagobj):
+    url = "http://127.0.0.1:80/swagger/"+path.replace('/', '#')
+    payload = {
+        "projectname": projname,
+        "path": path,
+        "tags": tags,
+        "status": status,
+        "swaggerobject": swagobj,
+        "dependency": dep
+    }
+    resp = requests.put(url, data=json.dumps(payload), headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
 def post_logout(token):
     url = "http://127.0.0.1:80/auth/logout"
     headers = {'Authorization': token}

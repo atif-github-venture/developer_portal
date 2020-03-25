@@ -11,5 +11,6 @@ urlpatterns = [
     path('group/', views.group, name='group'),
     path('access/', views.access, name='access'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('swagger/', views.swagger, name='swagger'),
+    path('swaggerview/', views.swaggerview, name='swaggerview'),
+    path('swaggeredit/', views.swaggeredit, name='swaggeredit'),
 ]
