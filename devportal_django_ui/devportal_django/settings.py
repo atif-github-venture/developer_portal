@@ -27,7 +27,7 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = ['django.local', '127.0.0.1']
-
+STATIC_URL = '/static/'
 
 # Application definition
 
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     # 'django.contrib.contenttypes',
     # 'django.contrib.sessions',
     'django.contrib.messages',
-    # 'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
     'rest_framework',
     'ui'
 ]

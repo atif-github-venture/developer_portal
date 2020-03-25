@@ -63,6 +63,13 @@ def put_groupmodify(token, searchstr, userlist):
     return resp
 
 
+def get_swagger(token, query):
+    url = "http://127.0.0.1:80/swagger?" + query
+    resp = requests.get(url, headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
 def post_swagger(token, projname, path, status, dep, tags, swagobj):
     url = "http://127.0.0.1:80/swagger"
     payload = {

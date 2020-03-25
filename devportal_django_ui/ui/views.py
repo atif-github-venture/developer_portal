@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import RegistrationForm, LoginForm, AddSwaggerForm
 from .services import get_groups, get_accessrules, post_registration, post_login, post_logout, get_group_details, \
-    put_groupmodify, post_swagger
+    put_groupmodify, post_swagger, get_swagger
 from django.contrib import messages
 import ast
 
@@ -160,7 +160,18 @@ def swaggeredit(request):
             add = True
             form = AddSwaggerForm()
         elif "Edit" in request.GET:
-            edit = True
+            return render(request, 'ui/swaggeredit.html', {'form': form, 'authenticated': au, 'admin': ad,
+                                                           'edit': True})
+        elif "Search" in request.GET:
+            query = 'path=' + request.GET['fname']
+            resp = get_swagger(to, query=query)
+            if resp.status_code == 200:
+                form = AddSwaggerForm(resp.json())
+            else:
+                msg = resp.json()['message']
+                messages.info(request, msg, '')
+            return render(request, 'ui/swaggeredit.html', {'form': form, 'authenticated': au, 'admin': ad,
+                                                           'edit': True, 'showswag': True})
     elif request.method == 'POST':
         if "Save" in request.POST:
             form = AddSwaggerForm(request.POST)

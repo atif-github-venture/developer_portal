@@ -9,18 +9,35 @@
             <tr>
                 <th>Groups</th>
                 <th>Users</th>
+                <th>Edit/Delete</th>
             </tr>
             </thead>
             <tbody>
+
             {% for group in groups %}
             <tr>
+                <form method="post">
                 <th>{{ group.groupname }}</th>
                 <td>
                     {% for user in group.users %}
                     {{ user }}<br>
                     {% endfor %}
                 </td>
+                {% load static %}
+
+                <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+                <td colspan ='4'>
+                    <button style="background: none; padding: 0px; border: none" type="submit" name="edit">
+                        <i style='font-size:15px' class='far'>&#xf044;</i>
+                    </button>
+                    <button style="background: none; padding: 0px; border: none" type="submit" name="delete">
+                        <i style='font-size:15px' class='fas'>&#xf2ed;</i>
+                    </button>
+                </td>
+<!--                <td colspan ='4'><img src="{% static 'ui/write_edit_icon.png' %}" alt="" border='3' height='25' width='25' /></td>-->
+                </form>
             </tr>
+
             {% endfor %}
             </tbody>
         </table>
