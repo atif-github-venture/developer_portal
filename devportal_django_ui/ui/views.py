@@ -40,6 +40,11 @@ def index(request):
     return render(request, 'ui/index.html', getbody(au, ad))
 
 
+def dependency(request):
+    to, ad, au = determine(request)
+    return render(request, 'ui/dependency.html', getbody(au, ad))
+
+
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)

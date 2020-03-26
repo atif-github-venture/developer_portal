@@ -13,4 +13,5 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('swaggerview/', views.swaggerview, name='swaggerview'),
     path('swaggeredit/', views.swaggeredit, name='swaggeredit'),
+    path('dependency/', views.dependency, name='dependency'),
 ]
