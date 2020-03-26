@@ -26,7 +26,7 @@ SECRET_KEY = 'gn!vhwt_qsh4306r8@oe)@o#egp+dsitk5m0sq#a9_hd85!by@'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['django.local', '127.0.0.1']
+ALLOWED_HOSTS = ['django.local', '127.0.0.1', 'localhost']
 STATIC_URL = '/static/'
 
 # Application definition

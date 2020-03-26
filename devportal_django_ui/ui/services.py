@@ -84,8 +84,9 @@ def post_swagger(token, projname, path, status, dep, tags, swagobj):
         'Authorization': token, 'Content-Type': 'application/json'})
     return resp
 
+
 def put_swagger(token, projname, path, status, dep, tags, swagobj):
-    url = "http://127.0.0.1:80/swagger/"+path.replace('/', '#')
+    url = "http://127.0.0.1:80/swagger/edit?path=" + path
     payload = {
         "projectname": projname,
         "path": path,

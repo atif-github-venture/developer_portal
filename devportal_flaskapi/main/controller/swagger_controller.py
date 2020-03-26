@@ -46,14 +46,14 @@ class ModifySwaggerStatus(Resource):
             return ms
 
 
-@api.route('/<swaggerpath>')
+@api.route('/edit')
 @api.param('swaggerpath', 'The swagger identifier')
 @api.response(200, 'Swagger updated.')
 @api.response(404, 'Swagger not found.')
 class ModifySwagger(Resource):
     @api.doc('Modify a swagger for a path')
-    def put(self, swaggerpath):
-        swaggerpath = swaggerpath.replace('#', '/')
+    def put(self):
+        swaggerpath = request.args.get('path')
         ms = modify_swagger(swaggerpath, data=request.json)
         if not ms:
             api.abort(404)

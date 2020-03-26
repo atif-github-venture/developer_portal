@@ -42,7 +42,7 @@ def modify_swagger(finder, data):
     else:
         if swaggerpath.update(set__projectname=data['projectname'], set__path=data['path'], set__tags=data['tags'],
                               set__status=data['status'], set__swaggerobject=str(data['swaggerobject']),
-                              set__dependency=str(data['dependency'])):
+                              set__dependency=data['dependency']):
             return "Swagger updated!", 200
         else:
             return "Something wrong in update body", 500

@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import RegistrationForm, LoginForm, AddSwaggerForm
 from .services import get_groups, get_accessrules, post_registration, post_login, post_logout, get_group_details, \
-    put_groupmodify, post_swagger, get_swagger
+    put_groupmodify, post_swagger, get_swagger, put_swagger
 from django.contrib import messages
 import ast
 
@@ -166,7 +166,15 @@ def swaggeredit(request):
             query = 'path=' + request.GET['fname']
             resp = get_swagger(to, query=query)
             if resp.status_code == 200:
-                form = AddSwaggerForm(resp.json())
+                load = {
+                    'projectname': resp.json()['projectname'],
+                    'path': resp.json()['path'],
+                    'tags': ','.join(resp.json()['tags']),
+                    'status': resp.json()['status'],
+                    'dependency': ','.join(resp.json()['dependency']),
+                    'swaggerobject': resp.json()['swaggerobject'],
+                }
+                form = AddSwaggerForm(load)
             else:
                 msg = resp.json()['message']
                 messages.info(request, msg, '')
@@ -176,12 +184,22 @@ def swaggeredit(request):
         if "Save" in request.POST:
             form = AddSwaggerForm(request.POST)
             if form.is_valid():
-                tags = form.cleaned_data['tags'].split(',')
-                dependency = form.cleaned_data['dependency'].split(',')
-                resp = post_swagger(to, form.cleaned_data['projectname'], form.cleaned_data['path'],
-                                    form.cleaned_data['status'], dependency, tags, form.cleaned_data['swaggerobject'])
+                tags = form.cleaned_data['tags'].replace(' ', '').split(',')
+                dependency = form.cleaned_data['dependency'].replace(' ', '').split(',')
+                try:
+                    # /modification
+                    if request.GET['fname'] is not None:
+                        resp = put_swagger(to, form.cleaned_data['projectname'], form.cleaned_data['path'],
+                                            form.cleaned_data['status'], dependency, tags, form.cleaned_data['swaggerobject'])
+                except:
+                    # /adding
+                    resp = post_swagger(to, form.cleaned_data['projectname'], form.cleaned_data['path'],
+                                            form.cleaned_data['status'], dependency, tags, form.cleaned_data['swaggerobject'])
                 if resp.status_code != 200:
-                    msg = resp.json()['message']
+                    if resp.status_code == 404:
+                        msg = 'Search criteria not found'
+                    else:
+                        msg = resp.json()['message']
                     messages.info(request, msg, '')
                     return render(request, 'ui/swaggeredit.html', {'form': form, 'authenticated': au, 'admin': ad,
                                                                    'add': True})
