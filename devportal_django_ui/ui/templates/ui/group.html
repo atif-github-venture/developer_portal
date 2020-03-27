@@ -4,37 +4,36 @@
 <div class="container">
     <div class="jumbotron">
         <h2>Groups</h2>
-        <table class="table is-fullwidth is-striped is-bordered" border="1">
+        <table class="table table-hover" border="1">
             <thead>
             <tr>
-                <th>Groups</th>
-                <th>Users</th>
-                <th>Edit/Delete</th>
+                <th scope="col" class="text-center">Groups</th>
+                <th scope="col" class="text-center">Users</th>
+                <th scope="col" class="text-center">Edit/Delete</th>
             </tr>
             </thead>
             <tbody>
 
             {% for group in groups %}
-            <tr>
+            <tr class="table-info">
                 <form method="post">
-                <th>{{ group.groupname }}</th>
-                <td>
-                    {% for user in group.users %}
-                    {{ user }}<br>
-                    {% endfor %}
-                </td>
-                {% load static %}
+                    <th scope="row" class="text-center">{{ group.groupname }}</th>
+                    <td align="center">
+                        {% for user in group.users %}
+                        {{ user }}<br>
+                        {% endfor %}
+                    </td>
+                    {% load static %}
 
-                <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-                <td colspan ='4'>
-                    <button style="background: none; padding: 0px; border: none" type="submit" name="edit">
-                        <i style='font-size:15px' class='far'>&#xf044;</i>
-                    </button>
-                    <button style="background: none; padding: 0px; border: none" type="submit" name="delete">
-                        <i style='font-size:15px' class='fas'>&#xf2ed;</i>
-                    </button>
-                </td>
-<!--                <td colspan ='4'><img src="{% static 'ui/write_edit_icon.png' %}" alt="" border='3' height='25' width='25' /></td>-->
+                    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+                    <td colspan='4' align="center">
+                        <button style="background: none; padding: 0px; border: none" type="submit" name="edit">
+                            <i style='font-size:15px' class='far'>&#xf044;</i>
+                        </button>
+                        <button style="background: none; padding: 0px; border: none" type="submit" name="delete">
+                            <i style='font-size:15px' class='fas'>&#xf2ed;</i>
+                        </button>
+                    </td>
                 </form>
             </tr>
 

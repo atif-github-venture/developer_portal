@@ -1,0 +1,139 @@
+{% extends "ui/base.html" %}
+{% block body_block %}
+<div id="exTab2" class="container">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a data-toggle="tab" class="nav-link" href="#groups">Groups</a>
+        </li>
+        <li class="nav-item">
+            <a data-toggle="tab" class="nav-link" href="#access">Access Rules</a>
+        </li>
+    </ul>
+    <br><br>
+    <div class="tab-content ">
+        <div class="tab-pane fade" id="groups">
+            <table class="table table-hover" border="1">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center">Groups</th>
+                    <th scope="col" class="text-center">Users</th>
+                    <th scope="col" class="text-center">Edit/Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for group in groups %}
+                <tr class="table-info">
+                    <form method="post">
+                        <th scope="row" class="text-center">{{ group.groupname }}</th>
+                        <td align="center">
+                            {% for user in group.users %}
+                            {{ user }}<br>
+                            {% endfor %}
+                        </td>
+                        {% load static %}
+
+                        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+                        <td colspan='4' align="center">
+                            <button style="background: none; padding: 0px; border: none" type="submit" name="edit">
+                                <i style='font-size:15px' class='far'>&#xf044;</i>
+                            </button>
+                            <button style="background: none; padding: 0px; border: none" type="submit" name="delete">
+                                <i style='font-size:15px' class='fas'>&#xf2ed;</i>
+                            </button>
+                        </td>
+                    </form>
+                </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 bg-info">
+                        <label for="groupname">Search for group name</label>
+                        <br>
+                        <form action="" method="GET">
+                            <input type="text" id="groupname" name="groupname">
+                            <input type="submit" value="Search">
+                        </form>
+                        <br>
+                        <form id="form1" runat="server">
+                            <input id="btnAdd" type="button" value="add" onclick="AddTextBox()"/>
+                            <br/>
+                            <br/>
+
+                            <div id="TextBoxContainer">
+                                {% for form in formset %}
+                                <input name="DynamicTextBox" type="text" value={{form}}>
+                                <br>
+                                {% endfor %}
+                            </div>
+                            <br/>
+                            <input type="submit" formmethod="POST" name="Save Group" value="Save Group">
+                            <input type="submit" formmethod="POST" name="Cancel" value="Cancel">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="access">
+            <table class="table table-hover" border="1">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center">Project</th>
+                    <th scope="col" class="text-center">Groups</th>
+                    <th scope="col" class="text-center">Users</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ac in accessrules %}
+                <tr class="table-success">
+                    <th scope="row" class="text-center">{{ ac.projectname }}</th>
+                    <td class="text-center">
+                        {% for group in ac.groups %}
+                        {{ group }}<br>
+                        {% endfor %}
+                    </td>
+                    <td class="text-center">
+                        {% for user in ac.users %}
+                        {{ user }}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function GetDynamicTextBox(value){
+        return '<input name = "DynamicTextBox" type="text" value = "' + value + '" />' +
+            '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" />'
+    }
+    function AddTextBox() {
+        var div = document.createElement('DIV');
+        div.innerHTML = GetDynamicTextBox("");
+        document.getElementById("TextBoxContainer").appendChild(div);
+    }
+
+    function RemoveTextBox(div) {
+        document.getElementById("TextBoxContainer").removeChild(div.parentNode);
+    }
+
+    function RecreateDynamicTextboxes() {
+        var values = eval('<%=Values%>');
+        if (values != null) {
+            var html = "";
+            for (var i = 0; i < values.length; i++) {
+                html += "<div>" + GetDynamicTextBox(values[i]) + "</div>";
+            }
+            document.getElementById("TextBoxContainer").innerHTML = html;
+        }
+    }
+    window.onload = RecreateDynamicTextboxes;
+</script>
+{% endblock %}

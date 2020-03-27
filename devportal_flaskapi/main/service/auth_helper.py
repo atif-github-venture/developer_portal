@@ -11,11 +11,11 @@ class Auth:
     def login_user(data):
         try:
             # fetch the user data
-            user = User.objects(email=data.get('email')).first()
+            user = User.objects(username=data.get('username')).first()
             if user and user.check_password(data.get('password')):
                 auth_token = User.encode_auth_token(user.username, user.admin)
                 if auth_token:
-                    return {'admin': user.admin, 'token' : auth_token.decode()}, 200
+                    return {'admin': user.admin, 'token': auth_token.decode()}, 200
             else:
                 response_object = {
                     'status': 'Fail',
@@ -44,10 +44,10 @@ class Auth:
                 if code == 200:
                     auth_token = User.encode_auth_token(resp['user'], resp['admin'])
                     if auth_token:
-                        resp = Response()
-                        resp.status_code = 204
-                        resp.headers.add('Set-Cookie', 'auth-token=' + auth_token.decode())
-                        return resp
+                        # resp = Response()
+                        # resp.status_code = 204
+                        # resp.headers.add('Set-Cookie', 'auth-token=' + auth_token.decode())
+                        return {'admin': resp['admin'], 'token': auth_token.decode()}
                 else:
                     response_object = {
                         'status': 'Fail',

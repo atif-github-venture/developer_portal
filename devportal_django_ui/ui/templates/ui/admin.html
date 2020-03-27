@@ -1,21 +1,42 @@
 {% extends "ui/base.html" %}
 {% block body_block %}
-
-<div class="container">
-    <div class="jumbotron">
-        <h4>Administration</h4>
-        <table border="2px solid #1C6EA4" style="width:30%">
-            <tr>
-                <th bgcolor="#D3D3D3" style="text-align:center">Access Rules & Groups</th>
-            </tr>
-            <tr>
-                <th>Groups</th>
-            </tr>
-            <tr>
-                <th>Access</th>
-            </tr>
-        </table>
-
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 bg-success">
+            <h5 align="center"><strong>Add Permission</strong></h5>
+            <br>
+            <select id="users" name="userlist" form="adduser" class="form-control">
+                {% for user in users %}
+                <option value="{{user}}"
+                        selected="selected" >
+                    {{user|capfirst}}
+                </option>
+                {% endfor %}
+            </select>
+            <br>
+            <form method="post" id="adduser">
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="admin" id="admin" value="Admin">
+                    <label class="form-check-label" for="admin">Admin</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="developer" id="developer" value="Developer">
+                    <label class="form-check-label" for="developer">Developer</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="view" id="view" value="View">
+                    <label class="form-check-label" for="view">View</label>
+                </div>
+                <br>
+                <br>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Add User Permission
+                </button>
+                <br>
+            </form>
+        </div>
+        <!--        <div class="col-sm-6 bg-warning">-->
+        <!--            <input type="text" class="form-control-lg" id="usr">-->
+        <!--        </div>-->
     </div>
 </div>
 

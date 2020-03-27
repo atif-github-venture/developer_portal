@@ -5,9 +5,9 @@ from django.shortcuts import render, redirect
 from django.template import engines
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .forms import RegistrationForm, LoginForm, AddSwaggerForm
+from .forms import RegistrationForm, LoginForm, AddSwaggerForm, PermissionForm
 from .services import get_groups, get_accessrules, post_registration, post_login, post_logout, get_group_details, \
-    put_groupmodify, post_swagger, get_swagger, put_swagger
+    put_groupmodify, post_swagger, get_swagger, put_swagger, get_permission, get_users
 from django.contrib import messages
 import ast
 
@@ -62,11 +62,11 @@ def signin(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            resp = post_login(form.cleaned_data['email'], form.cleaned_data['password'])
+            resp = post_login(form.cleaned_data['username'], form.cleaned_data['password'])
             if resp.status_code != 200:
                 msg = resp.json()['message']
                 messages.info(request, msg, '')
-                return redirect('signinsignup')
+                return redirect('signin')
             else:
                 token = resp.json()['token']
                 admin = resp.json()['admin']
@@ -77,53 +77,75 @@ def signin(request):
                 response.set_cookie(key='authenticated', value=True)
                 return response
         else:
-            return redirect('signinsignup')
+            return redirect('signin')
     else:
         form = LoginForm()
-    return render(request, 'ui/signinsignup.html', {'form': form})
+    return render(request, 'ui/signin.html', {'form': form})
 
 
-def group(request):
-    users_lst = None
+# def group(request):
+#     users_lst = None
+#     if request.method == 'GET':
+#         try:
+#             if request.GET['groupname'] != '':
+#                 resp = get_group_details(request.COOKIES['token'], request.GET['groupname'])
+#                 if resp.status_code == 200:
+#                     users_lst = list(resp.json()['users'])
+#                 else:
+#                     msg = 'Search failed!'
+#                     messages.info(request, msg, '')
+#                     return redirect('group')
+#         except:
+#             pass
+#     elif request.method == 'POST':
+#         if "Cancel" in request.POST:
+#             pass
+#         elif "Save Group" in request.POST:
+#             lst = request.body.decode('UTF-8').split('&')
+#             users = []
+#             for i in range(len(lst) - 1):
+#                 users.append(lst[i].split('=')[1])
+#             users = [i for i in users if i]
+#             resp = put_groupmodify(request.COOKIES['token'], request.GET['groupname'], users)
+#             if resp.status_code != 200:
+#                 msg = resp.json()['message']
+#                 messages.info(request, msg, '')
+#             else:
+#                 msg = resp.json()
+#                 messages.info(request, msg, '')
+#
+#     to, ad, au = determine(request)
+#     return render(request, 'ui/group.html',
+#                   {'groups': get_groups(request.COOKIES['token']), 'authenticated': au, 'admin': ad,
+#                    'formset': users_lst})
+
+
+def admin(request):
+    form = None
+    to, ad, au = determine(request)
+    users_resp = get_users(to)
+    if users_resp.status_code == 200:
+        users = [item['username'] for item in users_resp.json()['data']]
+    else:
+        msg = 'Search failed!'
+        messages.info(request, msg, '')
+        return redirect('admin')
     if request.method == 'GET':
-        try:
-            if request.GET['groupname'] != '':
-                resp = get_group_details(request.COOKIES['token'], request.GET['groupname'])
-                if resp.status_code == 200:
-                    users_lst = list(resp.json()['users'])
-                else:
-                    msg = 'Search failed!'
-                    messages.info(request, msg, '')
-                    return redirect('group')
-        except:
-            pass
+        # form = PermissionForm()
+        perm_resp = get_permission(to)
+        if users_resp.status_code == 200:
+            users = [item['username'] for item in users_resp.json()['data']]
+        else:
+            msg = 'Search failed!'
+            messages.info(request, msg, '')
+            return redirect('admin')
+
+
+        return render(request, 'ui/admin.html',
+                  {'form': form, 'users': users, 'authenticated': au, 'admin': ad})
     elif request.method == 'POST':
-        if "Cancel" in request.POST:
-            pass
-        elif "Save Group" in request.POST:
-            lst = request.body.decode('UTF-8').split('&')
-            users = []
-            for i in range(len(lst) - 1):
-                users.append(lst[i].split('=')[1])
-            users = [i for i in users if i]
-            resp = put_groupmodify(request.COOKIES['token'], request.GET['groupname'], users)
-            if resp.status_code != 200:
-                msg = resp.json()['message']
-                messages.info(request, msg, '')
-            else:
-                msg = resp.json()
-                messages.info(request, msg, '')
-
-    to, ad, au = determine(request)
-    return render(request, 'ui/group.html',
-                  {'groups': get_groups(request.COOKIES['token']), 'authenticated': au, 'admin': ad,
-                   'formset': users_lst})
-
-
-def access(request):
-    to, ad, au = determine(request)
-    return render(request, 'ui/access.html',
-                  {'accessrules': get_accessrules(request.COOKIES['token']), 'authenticated': au, 'admin': ad})
+        return render(request, 'ui/admin.html',
+                      {'form': form, 'users': users, 'authenticated': au, 'admin': ad})
 
 
 def dashboard(request):
@@ -195,11 +217,13 @@ def swaggeredit(request):
                     # /modification
                     if request.GET['fname'] is not None:
                         resp = put_swagger(to, form.cleaned_data['projectname'], form.cleaned_data['path'],
-                                            form.cleaned_data['status'], dependency, tags, form.cleaned_data['swaggerobject'])
+                                           form.cleaned_data['status'], dependency, tags,
+                                           form.cleaned_data['swaggerobject'])
                 except:
                     # /adding
                     resp = post_swagger(to, form.cleaned_data['projectname'], form.cleaned_data['path'],
-                                            form.cleaned_data['status'], dependency, tags, form.cleaned_data['swaggerobject'])
+                                        form.cleaned_data['status'], dependency, tags,
+                                        form.cleaned_data['swaggerobject'])
                 if resp.status_code != 200:
                     if resp.status_code == 404:
                         msg = 'Search criteria not found'

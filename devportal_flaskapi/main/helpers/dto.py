@@ -24,8 +24,16 @@ class GetUser:
 class AuthDto:
     api = Namespace('auth', description='Authentication related operations')
     user_auth = api.model('auth_details', {
-        'email': fields.String(required=True, description='The email address'),
+        'username': fields.String(required=True, description='The username'),
         'password': fields.String(required=True, description='The user password '),
+    })
+
+
+class PermissionDto:
+    api = Namespace('permission', description='Permission related operations')
+    permission = api.model('permission', {
+        'user': fields.String(required=True, description='user name'),
+        'permission': fields.List(fields.String, required=True, description='List of permissions')
     })
 
 

@@ -43,7 +43,7 @@ def post_registration(email, user, password):
 def post_login(email, password):
     url = "http://127.0.0.1:80/auth/login"
     payload = {
-        'email': email,
+        'username': email,
         'password': password
     }
     headers = {'Content-Type': 'application/json'}
@@ -59,6 +59,20 @@ def put_groupmodify(token, searchstr, userlist):
         'users': userlist
     }
     resp = requests.put(url, data=json.dumps(payload), headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
+def get_permission(token):
+    url = "http://127.0.0.1:80/permission"
+    resp = requests.get(url, headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
+def get_users(token):
+    url = "http://127.0.0.1:80/user"
+    resp = requests.get(url, headers={
         'Authorization': token, 'Content-Type': 'application/json'})
     return resp
 
