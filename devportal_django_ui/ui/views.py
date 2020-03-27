@@ -55,10 +55,10 @@ def register(request):
             return redirect('register')
     else:
         form = RegistrationForm()
-    return render(request, 'ui/registration.html', {'form': form})
+    return render(request, 'ui/register.html', {'form': form})
 
 
-def login(request):
+def signin(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -66,7 +66,7 @@ def login(request):
             if resp.status_code != 200:
                 msg = resp.json()['message']
                 messages.info(request, msg, '')
-                return redirect('login')
+                return redirect('signinsignup')
             else:
                 token = resp.json()['token']
                 admin = resp.json()['admin']
@@ -77,10 +77,10 @@ def login(request):
                 response.set_cookie(key='authenticated', value=True)
                 return response
         else:
-            return redirect('login')
+            return redirect('signinsignup')
     else:
         form = LoginForm()
-    return render(request, 'ui/login.html', {'form': form})
+    return render(request, 'ui/signinsignup.html', {'form': form})
 
 
 def group(request):
