@@ -7,7 +7,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import RegistrationForm, LoginForm, AddSwaggerForm, PermissionForm
 from .services import get_groups, get_accessrules, post_registration, post_login, post_logout, get_group_details, \
-    put_groupmodify, post_swagger, get_swagger, put_swagger, get_permission, get_users, post_permission, put_permission
+    put_groupmodify, post_swagger, get_swagger, put_swagger, get_permission, get_users, post_permission, put_permission, \
+    get_swaggerprojects, get_swaggerlist
 from django.contrib import messages
 import ast
 
@@ -141,9 +142,8 @@ def admin(request):
             messages.info(request, msg, '')
             return redirect('admin')
 
-
         return render(request, 'ui/admin.html',
-                  {'form': form, 'users': users, 'authenticated': au, 'admin': ad, 'perm': perm})
+                      {'form': form, 'users': users, 'authenticated': au, 'admin': ad, 'perm': perm})
     elif request.method == 'POST':
         if 'adduserperm' in request.POST:
             permlist = []
@@ -169,15 +169,15 @@ def admin(request):
             user = request.POST['modifyuserperm'].lower()
             permlist = []
             try:
-                permlist.append(request.POST['admin'].lower().replace('_'+user, ''))
+                permlist.append(request.POST['admin'].lower().replace('_' + user, ''))
             except:
                 pass
             try:
-                permlist.append(request.POST['developer'].lower().replace('_'+user, ''))
+                permlist.append(request.POST['developer'].lower().replace('_' + user, ''))
             except:
                 pass
             try:
-                permlist.append(request.POST['view'].lower().replace('_'+user, ''))
+                permlist.append(request.POST['view'].lower().replace('_' + user, ''))
             except:
                 pass
             resp = put_permission(to, user, permlist)
@@ -217,9 +217,38 @@ def logout(request):
 
 def swaggerview(request):
     to, ad, au = determine(request)
-    with open('/Users/aahmed/Documents/FE_GIT/developer_portal/devportal_django_ui/ui/j.json') as json_file:
-        abc = json.load(json_file)
-    return render(request, 'ui/swagger_embed.html', {'jcon': json.dumps(abc), 'authenticated': au, 'admin': ad})
+    projects = get_swaggerprojects(to)
+    projname = None
+    path_list = None
+    selectedpath = None
+    swagobj = None
+    if request.method == 'GET':
+        if 'getapipath' in request.GET:
+            projname = request.GET['projectlist']
+            resp = get_swaggerlist(to, projname)
+            if resp.status_code == 200:
+                path_list = resp.json()
+            else:
+                messages.info(request, 'Invalid search!', '')
+        if 'getswagger' in request.GET:
+            path_list = request.GET['getswagger'].split(';')[1:]
+            projname = request.GET['projectlist']
+            selectedpath = request.GET['pathlist']
+            query = 'path=' + selectedpath
+            resp = get_swagger(to, query=query)
+            if resp.status_code == 200:
+                swagobj = resp.json()['swaggerobject']
+            else:
+                messages.info(request, 'Invalid result!', '')
+        return render(request, 'ui/swagger_embed.html',
+                      {'authenticated': au, 'admin': ad, 'projects': projects.json(),
+                       'paths': path_list, 'projname': projname, 'jcon': swagobj, 'selectedpath': selectedpath})
+
+    # with open('/Users/aahmed/Documents/FE_GIT/developer_portal/devportal_django_ui/ui/j.json') as json_file:
+    #     abc = json.load(json_file)
+    # return render(request, 'ui/swagger_embed.html',
+    #               {'jcon': json.dumps('abc'), 'authenticated': au, 'admin': ad, 'projects': projects.json(),
+    #                'path': path.json()})
 
 
 def swaggeredit(request):
@@ -247,11 +276,12 @@ def swaggeredit(request):
                     'swaggerobject': resp.json()['swaggerobject'],
                 }
                 form = AddSwaggerForm(load)
+                showtag = True
             else:
-                msg = resp.json()['message']
-                messages.info(request, msg, '')
+                messages.info(request, 'Invalid search!', '')
+                showtag = False
             return render(request, 'ui/swaggeredit.html', {'form': form, 'authenticated': au, 'admin': ad,
-                                                           'edit': True, 'showswag': True})
+                                                           'edit': True, 'showswag': showtag})
     elif request.method == 'POST':
         if "Save" in request.POST:
             form = AddSwaggerForm(request.POST)

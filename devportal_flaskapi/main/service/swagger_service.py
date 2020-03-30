@@ -35,6 +35,21 @@ def get_swagger(path):
     return Swagger.objects(**path).first()
 
 
+def get_swagger_projectlist():
+    projects = []
+    for item in Swagger.objects.all():
+        projects.append(item['projectname'])
+    return list(set(projects))
+
+
+def get_swaggerlist_for_project(pn):
+    swaggerlist = []
+    so = Swagger.objects(projectname=pn)
+    for item in so:
+        swaggerlist.append(item['path'])
+    return list(set(swaggerlist))
+
+
 def modify_swagger(finder, data):
     swaggerpath = Swagger.objects(path=finder).first()
     if not swaggerpath:

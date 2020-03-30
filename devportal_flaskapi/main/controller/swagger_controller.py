@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from flask_restplus import Resource
 from devportal_flaskapi.main.service.swagger_service import create_swagger, get_swagger, modify_swagger, \
-    modify_swagger_status
+    modify_swagger_status, get_swagger_projectlist, get_swaggerlist_for_project
 from ..helpers.dto import SwaggerDto
 from urllib.parse import parse_qs
 
@@ -11,24 +11,50 @@ swagger = SwaggerDto.swagger
 
 @api.route('')
 class SwaggerPost(Resource):
-    @api.doc('Swagger Info')
+    @api.doc('To save swagger information')
     # @api.expect(swagger, validate=True)
     @api.response(200, 'Swagger information saved.')
     def post(self):
         post_data = request.json
         return create_swagger(data=post_data)
 
-    @api.doc('Get details of a swagger')
+    @api.doc('Get details of a SINGLE swagger')
     @api.response(404, 'Swagger details not found.')
     @api.marshal_with(swagger)
     def get(self, ):
         query_params = dict(parse_qs(request.query_string))
         query_params = {k.decode("utf-8"): v[0].decode("utf-8") for k, v in query_params.items()}
+        if len(query_params) == 0:
+            api.abort(404)
         swaggerdetails = get_swagger(query_params)
         if not swaggerdetails:
             api.abort(404)
         else:
             return swaggerdetails
+
+
+@api.route('/project')
+@api.doc('get list of projects for swaggers')
+class GetSwaggerProject(Resource):
+    def get(self):
+        swaggerproject = get_swagger_projectlist()
+        if not swaggerproject:
+            api.abort(404)
+        else:
+            return swaggerproject
+
+
+@api.route('/project/<projectname>')
+@api.param('projectname', 'project name')
+@api.response(404, 'List not found')
+class GetSwaggerList(Resource):
+    @api.doc('Get a list of swagger for a project')
+    def get(self, projectname):
+        ms = get_swaggerlist_for_project(projectname)
+        if not ms:
+            api.abort(404)
+        else:
+            return ms
 
 
 @api.route('/status/<swaggerpath>/<status>')

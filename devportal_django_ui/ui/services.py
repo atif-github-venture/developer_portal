@@ -63,6 +63,20 @@ def put_groupmodify(token, searchstr, userlist):
     return resp
 
 
+def get_swaggerprojects(token):
+    url = "http://127.0.0.1:80/swagger/project"
+    resp = requests.get(url, headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
+def get_swaggerlist(token, search):
+    url = "http://127.0.0.1:80/swagger/project/"+search
+    resp = requests.get(url, headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
 def get_permission(token):
     url = "http://127.0.0.1:80/permission"
     resp = requests.get(url, headers={

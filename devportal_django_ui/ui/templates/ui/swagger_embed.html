@@ -1,37 +1,66 @@
 {% extends 'ui/base.html' %}
 {% block body_block %}
-<table class="table table-primary">
-    <tr><strong>Select project</strong></tr>
-    <tr>
-        <td>
-            <select id="users" name="userlist" class="custom-select">
-                {% for project in projects %}
-                <option value="{{project}}"
-                        selected="selected">
-                    {{project|capfirst}}
-                </option>
-                {% endfor %}
-            </select>
-        </td>
-    </tr>
+<form name="swagger" method="get">
+<table class="table table-info">
+        <tr>
+            <td width="15%" align="center">
+                <p><strong>Select project</strong></p>
+            </td>
+            <td width="60%" align="center">
+                <select id="project" name="projectlist" class="custom-select">
+                    <option selected="selected">None</option>
+                    {% for project in projects %}
+                    <option value="{{project}}" {% if project == projname%} selected="selected" {% endif %}>
+                        {{project|capfirst}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td width="15%" align="center">
+                <button type="submit" class="btn btn-outline-warning" name="getapipath" value="getapipath">Search
+                </button>
+            </td>
+        </tr>
+<!--    </form>-->
     <tbody>
     </tbody>
 </table>
-
-<table class="table table-primary">
-    <tr>
-        <td>
-            <input type="text" class="form-control is-valid" id="inputValid">
-        </td>
-        <td>
-            <button type="button" class="btn btn-outline-warning">View</button>
-        </td>
-    </tr>
+<table class="table table-dark">
+<!--    <form name="getswagger" method="get">-->
+        <tr>
+            <td width="15%" align="center">
+                <p><strong>Select Path</strong></p>
+            </td>
+            <td width="60%" align="center">
+                <select id="path" name="pathlist" class="custom-select">
+                    {% for path in paths %}
+                    <option value="{{path}}">
+                        {{path}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td width="15%" align="center">
+<!--                <input type="hidden" name="paths" value=displayResult()>-->
+                <button type="submit" onclick="value=displayResult()" class="btn btn-outline-info" name="getswagger" value="getswagger">View</button>
+            </td>
+        </tr>
+<!--    </form>-->
     <tbody>
     </tbody>
 </table>
-
-
+</form>
+<script>
+    function displayResult() {
+        var x = document.getElementById("path");
+        var txt = "All options: ";
+        var i;
+        for (i = 0; i < x.length; i++) {
+            txt = txt + ";" + x.options[i].value;
+        }
+        return txt;
+    }
+</script>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
