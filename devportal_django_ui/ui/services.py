@@ -70,6 +70,28 @@ def get_permission(token):
     return resp
 
 
+def post_permission(token, user, listofperm):
+    url = "http://127.0.0.1:80/permission"
+    payload = {
+        "user": user,
+        "permission": listofperm
+    }
+    resp = requests.post(url, data=json.dumps(payload), headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
+def put_permission(token, user, listofperm):
+    url = "http://127.0.0.1:80/permission"
+    payload = {
+        "user": user,
+        "permission": listofperm
+    }
+    resp = requests.put(url, data=json.dumps(payload), headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
 def get_users(token):
     url = "http://127.0.0.1:80/user"
     resp = requests.get(url, headers={

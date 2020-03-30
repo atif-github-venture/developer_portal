@@ -1,43 +1,88 @@
 {% extends "ui/base.html" %}
 {% block body_block %}
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-6 bg-success">
-            <h5 align="center"><strong>Add Permission</strong></h5>
-            <br>
-            <select id="users" name="userlist" form="adduser" class="form-control">
-                {% for user in users %}
-                <option value="{{user}}"
-                        selected="selected" >
-                    {{user|capfirst}}
-                </option>
-                {% endfor %}
-            </select>
-            <br>
-            <form method="post" id="adduser">
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="admin" id="admin" value="Admin">
-                    <label class="form-check-label" for="admin">Admin</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="developer" id="developer" value="Developer">
-                    <label class="form-check-label" for="developer">Developer</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="view" id="view" value="View">
-                    <label class="form-check-label" for="view">View</label>
-                </div>
-                <br>
-                <br>
-                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Add User Permission
-                </button>
-                <br>
-            </form>
-        </div>
-        <!--        <div class="col-sm-6 bg-warning">-->
-        <!--            <input type="text" class="form-control-lg" id="usr">-->
-        <!--        </div>-->
+    <div class="card bg-success text-white">
+        <h5 align="center"><strong>Add Permission</strong></h5>
+        <table class="table table-hover table table-bordered text-center">
+            <tbody>
+            <tr class="table-warning">
+                <th class="align-center" scope="row" width="35%">
+                    <select id="users" name="userlist" form="adduser" class="form-control">
+                        {% for user in users %}
+                        <option value="{{user}}"
+                                selected="selected">
+                            {{user|capfirst}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <form method="post" id="adduser">
+                    <td class="align-middle">
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="admin" id="admin" value="Admin">
+                            <label class="form-check-label" for="admin">Admin</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="developer" id="developer" value="Developer">
+                            <label class="form-check-label" for="developer">Developer</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="view" id="view" value="View">
+                            <label class="form-check-label" for="view">View</label>
+                        </div>
+                    </td>
+                    <td class="align-center">
+                        <button class="btn btn-primary btn-block text-uppercase" type="submit" name="adduserperm">Add
+                            User
+                            Permission
+                        </button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
+<br>
+<div class="container-fluid">
+    <div class="card bg-info text-white">
+        <h5 align="center"><strong>Existing Permissions</strong></h5>
+        <table class="table table-hover table table-bordered text-center">
+            <tbody>
+            {% for item in perm %}
+            <tr class="table-warning">
+                <th class="align-center" scope="row" width="35%">
+                    <em>{{item.user|title}}</em>
+                </th>
+                <form method="post" id="adduser_{{item.user}}">
+                    <td class="align-middle">
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="admin" id="admin_{{item.user}}" value="Admin_{{item.user}}"
+                                   {% if "admin" in item.permission %} checked="checked" {% endif %}>
+                            <label class="form-check-label" for="admin">Admin</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="developer" id="developer_{{item.user}}"
+                                   value="Developer_{{item.user}}" {% if "developer" in item.permission %}
+                            checked="checked" {% endif %}>
+                            <label class="form-check-label" for="developer">Developer</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="view" id="view_{{item.user}}" value="View_{{item.user}}"
+                                   {% if "view" in item.permission %} checked="checked" {% endif %}>
+                            <label class="form-check-label" for="view">View</label>
+                        </div>
 
+                    </td>
+                    <td class="align-center">
+                        <button class="btn btn-primary btn-block text-uppercase" type="submit"
+                                name="modifyuserperm" value="{{item.user}}">Modify</button>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import RegistrationForm, LoginForm, AddSwaggerForm, PermissionForm
 from .services import get_groups, get_accessrules, post_registration, post_login, post_logout, get_group_details, \
-    put_groupmodify, post_swagger, get_swagger, put_swagger, get_permission, get_users
+    put_groupmodify, post_swagger, get_swagger, put_swagger, get_permission, get_users, post_permission, put_permission
 from django.contrib import messages
 import ast
 
@@ -124,6 +124,7 @@ def admin(request):
     form = None
     to, ad, au = determine(request)
     users_resp = get_users(to)
+    perm = None
     if users_resp.status_code == 200:
         users = [item['username'] for item in users_resp.json()['data']]
     else:
@@ -133,8 +134,8 @@ def admin(request):
     if request.method == 'GET':
         # form = PermissionForm()
         perm_resp = get_permission(to)
-        if users_resp.status_code == 200:
-            users = [item['username'] for item in users_resp.json()['data']]
+        if perm_resp.status_code == 200:
+            perm = perm_resp.json()
         else:
             msg = 'Search failed!'
             messages.info(request, msg, '')
@@ -142,10 +143,51 @@ def admin(request):
 
 
         return render(request, 'ui/admin.html',
-                  {'form': form, 'users': users, 'authenticated': au, 'admin': ad})
+                  {'form': form, 'users': users, 'authenticated': au, 'admin': ad, 'perm': perm})
     elif request.method == 'POST':
-        return render(request, 'ui/admin.html',
-                      {'form': form, 'users': users, 'authenticated': au, 'admin': ad})
+        if 'adduserperm' in request.POST:
+            permlist = []
+            try:
+                permlist.append(request.POST['admin'].lower())
+            except:
+                pass
+            try:
+                permlist.append(request.POST['developer'].lower())
+            except:
+                pass
+            try:
+                permlist.append(request.POST['view'].lower())
+            except:
+                pass
+            resp = post_permission(to, request.POST['userlist'], permlist)
+            if resp.status_code == 200:
+                msg = resp.json()
+            else:
+                msg = resp.json()['message']
+            messages.info(request, msg, '')
+        elif 'modifyuserperm' in request.POST:
+            user = request.POST['modifyuserperm'].lower()
+            permlist = []
+            try:
+                permlist.append(request.POST['admin'].lower().replace('_'+user, ''))
+            except:
+                pass
+            try:
+                permlist.append(request.POST['developer'].lower().replace('_'+user, ''))
+            except:
+                pass
+            try:
+                permlist.append(request.POST['view'].lower().replace('_'+user, ''))
+            except:
+                pass
+            resp = put_permission(to, user, permlist)
+            if resp.status_code == 200:
+                msg = resp.json()
+            else:
+                msg = resp.json()['message']
+            messages.info(request, msg, '')
+
+    return redirect('admin')
 
 
 def dashboard(request):
@@ -166,8 +208,11 @@ def logout(request):
     else:
         msg = 'Something went wrong while logging out'
         messages.info(request, msg, '')
-        to, ad, au = determine(request)
-        return render(request, 'ui/logout.html', {'authenticated': au, 'admin': ad})
+        response = render(request, 'ui/index.html', getbody(False, False))
+        response.delete_cookie(key='token')
+        response.delete_cookie(key='admin')
+        response.delete_cookie(key='authenticated')
+        return response
 
 
 def swaggerview(request):

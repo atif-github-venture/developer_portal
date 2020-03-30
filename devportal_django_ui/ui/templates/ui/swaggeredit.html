@@ -47,7 +47,7 @@
 <br>
 {% if showswag == True %}
 <div class="card bg-warning text-white" style="width: 40rem;">
-    <div class="card-body">
+    <div class="card-body" style="overflow-y: auto; max-height: 500px">
         <h4 align="center" class="card-title">Retrieved swagger information</h4>
         <br>
         {{ form.non_field_errors }}
