@@ -2,11 +2,16 @@
 {% block body_block %}
 <div class="container">
     <div class="jumbotron">
-        <h2>Expect to various graphs such as: </h2>
-        <h3>> Users Vs projects</h3>
-        <h3>> API docs Vs projects</h3>
-        <h3>> Overall lifecycle status of API Docs</h3>
-        <h3>> Etc.</h3>
+        <div>
+            {% autoescape off %}
+            {{ plot_div }}
+            {% endautoescape %}
+        </div>
+        <br>
+        <h4>Expect to various graphs such as: </h4>
+        <h6>> Users Vs projects</h6>
+        <h6>> API docs Vs projects</h6>
+        <h6>> Overall lifecycle status of API Docs, Etc.</h6>
     </div>
 </div>
 {% endblock %}
