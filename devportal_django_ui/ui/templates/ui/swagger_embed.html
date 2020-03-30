@@ -1,5 +1,37 @@
 {% extends 'ui/base.html' %}
 {% block body_block %}
+<table class="table table-primary">
+    <tr><strong>Select project</strong></tr>
+    <tr>
+        <td>
+            <select id="users" name="userlist" class="custom-select">
+                {% for project in projects %}
+                <option value="{{project}}"
+                        selected="selected">
+                    {{project|capfirst}}
+                </option>
+                {% endfor %}
+            </select>
+        </td>
+    </tr>
+    <tbody>
+    </tbody>
+</table>
+
+<table class="table table-primary">
+    <tr>
+        <td>
+            <input type="text" class="form-control is-valid" id="inputValid">
+        </td>
+        <td>
+            <button type="button" class="btn btn-outline-warning">View</button>
+        </td>
+    </tr>
+    <tbody>
+    </tbody>
+</table>
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -54,4 +86,5 @@
 </script>
 </body>
 </html>
+<br><br><br><br><br>
 {% endblock %}

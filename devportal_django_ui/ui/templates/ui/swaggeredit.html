@@ -7,7 +7,7 @@
 </form>
 <br><br>
 {% if add == True %}
-<div class="card bg-warning text-white" style="width: 40rem;">
+<div class="card bg-warning text-white" style="width: 40rem;box-shadow: 0 4px 8px 0 white">
     <div class="card-body">
         <h4 align="center" class="card-title">Provide the swagger information here</h4>
         {{ form.non_field_errors }}
@@ -36,17 +36,28 @@
         </form>
     </div>
 </div>
+
 {% endif %}
 <!--<br><br><br>-->
 {% if edit == True %}
 
 <form action="" method="get">
-    <input type="text" class="form-control" id="fname" name="fname" placeholder="Search API Path">
-    <button type="submit" class="btn btn-primary" formmethod="GET" name="Search">Search</button>
+    <table>
+        <tr>
+            <td style="width: 90%">
+                <input type="text" class="form-control" id="fname" name="fname" placeholder="Search API Path">
+            </td>
+            <td>
+                <button type="submit" class="btn btn-primary" formmethod="GET" name="Search">Search</button>
+            </td>
+        </tr>
+    </table>
+<!--    <input type="text" class="form-control" id="fname" name="fname" placeholder="Search API Path">-->
+<!--    <button type="submit" class="btn btn-primary" formmethod="GET" name="Search">Search</button>-->
 </form>
 <br>
 {% if showswag == True %}
-<div class="card bg-warning text-white" style="width: 40rem;">
+<div class="card bg-warning text-white" style="width: 40rem;box-shadow: 0 4px 8px 0 white">
     <div class="card-body" style="overflow-y: auto; max-height: 500px">
         <h4 align="center" class="card-title">Retrieved swagger information</h4>
         <br>
@@ -78,4 +89,5 @@
 </div>
 {% endif %}
 {% endif %}
+<br><br><br><br>
 {% endblock %}
