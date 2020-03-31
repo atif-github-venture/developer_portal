@@ -36,9 +36,9 @@ def determine(req):
     return token, admin, authstatus
 
 
-def index(request):
+def home(request):
     to, ad, au = determine(request)
-    return render(request, 'ui/index.html', getbody(au, ad))
+    return render(request, 'ui/home.html', getbody(au, ad))
 
 
 def dependency(request):
@@ -208,7 +208,7 @@ def logout(request):
     if resp.status_code == 200:
         msg = resp.json()['message']
         messages.info(request, msg, '')
-        response = render(request, 'ui/index.html', getbody(False, False))
+        response = render(request, 'ui/home.html', getbody(False, False))
         response.delete_cookie(key='token')
         response.delete_cookie(key='admin')
         response.delete_cookie(key='authenticated')
@@ -216,7 +216,7 @@ def logout(request):
     else:
         msg = 'Something went wrong while logging out'
         messages.info(request, msg, '')
-        response = render(request, 'ui/index.html', getbody(False, False))
+        response = render(request, 'ui/home.html', getbody(False, False))
         response.delete_cookie(key='token')
         response.delete_cookie(key='admin')
         response.delete_cookie(key='authenticated')
