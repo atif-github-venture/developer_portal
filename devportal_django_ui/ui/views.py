@@ -1,16 +1,12 @@
-import json
-
-from django.forms import formset_factory
 from django.shortcuts import render, redirect
-from django.template import engines
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from .forms import RegistrationForm, LoginForm, AddSwaggerForm, PermissionForm
-from .services import get_groups, get_accessrules, post_registration, post_login, post_logout, get_group_details, \
-    put_groupmodify, post_swagger, get_swagger, put_swagger, get_permission, get_users, post_permission, put_permission, \
-    get_swaggerprojects, get_swaggerlist
+from .forms import RegistrationForm, LoginForm, AddSwaggerForm
+from .services import post_registration, post_login, post_logout, \
+    post_swagger, get_swagger, put_swagger, get_permission, get_users, post_permission, put_permission, \
+    get_swaggerprojects, get_swaggerlist, get_swagger_metrics
 from django.contrib import messages
 import ast
+import plotly.graph_objects as go
+from plotly.offline import plot
 
 
 def getbody(auth, adm):
@@ -191,16 +187,37 @@ def admin(request):
 
 
 def dashboard(request):
-    from plotly.offline import plot
-    from plotly.graph_objs import Scatter
     to, ad, au = determine(request)
-    x_data = [0,1,2,3]
-    y_data = [x**2 for x in x_data]
-    plot_div = plot([Scatter(x=x_data, y=y_data,
-                             mode='lines', name='test',
-                             opacity=0.8, marker_color='green')],
-                    output_type='div')
-    return render(request, 'ui/dashboard.html', {'authenticated': au, 'admin': ad, 'plot_div': plot_div})
+    plot_div = None
+    plot_div_pie = None
+    resp = get_swagger_metrics(to)
+    if resp.status_code == 200:
+        items = resp.json()
+        status = items['status']
+        data = []
+        for item in items['project_list']:
+            data.append(
+                go.Bar(
+                    x=status,
+                    y=item['status_count'],
+                    name=item['project']
+                )
+            )
+        fig = go.Figure(data=data, layout={'template': 'plotly_dark'})
+        fig.update_layout(barmode='group', showlegend=True, title="API Documentation per Project",
+                          xaxis_title="Lifecycle Status",
+                          yaxis_title="Count")
+        plot_div = plot(fig, output_type='div')
+
+        stat_values = items['status_count_overall']
+        fig_pie = go.Figure(data=[go.Pie(labels=status, values=stat_values, pull=[0, 0, 0.2, 0])],
+                            layout={'template': 'plotly_dark'})
+        fig_pie.update_layout(showlegend=True, title="Overall Lifecycle Status")
+        plot_div_pie = plot(fig_pie, output_type='div')
+    else:
+        messages.info(request, 'Something went wrong at server level', '')
+    return render(request, 'ui/dashboard.html',
+                  {'authenticated': au, 'admin': ad, 'plot_div': plot_div, 'plot_div_pie': plot_div_pie})
 
 
 def logout(request):

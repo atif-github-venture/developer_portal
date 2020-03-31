@@ -113,6 +113,13 @@ def get_users(token):
     return resp
 
 
+def get_swagger_metrics(token):
+    url = "http://127.0.0.1:80/swagger/metrics"
+    resp = requests.get(url, headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
 def get_swagger(token, query):
     url = "http://127.0.0.1:80/swagger?" + query
     resp = requests.get(url, headers={

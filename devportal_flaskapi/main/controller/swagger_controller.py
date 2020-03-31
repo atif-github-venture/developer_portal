@@ -1,13 +1,12 @@
 from flask import request, jsonify
 from flask_restplus import Resource
 from devportal_flaskapi.main.service.swagger_service import create_swagger, get_swagger, modify_swagger, \
-    modify_swagger_status, get_swagger_projectlist, get_swaggerlist_for_project
+    modify_swagger_status, get_swagger_projectlist, get_swaggerlist_for_project, get_swagger_metrics
 from ..helpers.dto import SwaggerDto
 from urllib.parse import parse_qs
 
 api = SwaggerDto.api
 swagger = SwaggerDto.swagger
-
 
 @api.route('')
 class SwaggerPost(Resource):
@@ -42,6 +41,18 @@ class GetSwaggerProject(Resource):
             api.abort(404)
         else:
             return swaggerproject
+
+
+@api.route('/metrics')
+@api.doc('get metrics for dashboard')
+class GetSwaggerMetrics(Resource):
+    def get(self):
+        status = ['Published', 'Deployed', 'Deprecated']
+        swaggermetrics = get_swagger_metrics(status)
+        if not swaggermetrics:
+            api.abort(404)
+        else:
+            return swaggermetrics
 
 
 @api.route('/project/<projectname>')

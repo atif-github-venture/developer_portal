@@ -42,6 +42,27 @@ def get_swagger_projectlist():
     return list(set(projects))
 
 
+def get_swagger_metrics(stats):
+    projects = Swagger.objects().distinct(field="projectname")
+    resp = {}
+    project_list = []
+    stats_all = {}
+    for project in projects:
+        stats_values = []
+        for stat in stats:
+            value = len(Swagger.objects(projectname=project, status=stat))
+            stats_values.append(value)
+            if stat not in stats_all:
+                stats_all[stat] = value
+            else:
+                stats_all[stat] += value
+        project_list.append({'project': project, 'status_count' : stats_values})
+    resp['status'] = stats
+    resp['status_count_overall'] = [v for v in stats_all.values()]
+    resp['project_list'] = project_list
+    return resp
+
+
 def get_swaggerlist_for_project(pn):
     swaggerlist = []
     so = Swagger.objects(projectname=pn)
