@@ -32,7 +32,7 @@ def get_all_permission():
 
 
 def get_permission(user):
-    return Permission.objects(user=user).first()
+    return list(Permission.objects(user=user).first().permission)
 
 
 def modify_permission(data):

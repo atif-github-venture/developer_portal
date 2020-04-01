@@ -247,27 +247,30 @@ def swaggerview(request):
     path_list = None
     selectedpath = None
     swagobj = None
-    if request.method == 'GET':
-        if 'getapipath' in request.GET:
-            projname = request.GET['projectlist']
-            resp = get_swaggerlist(to, projname)
-            if resp.status_code == 200:
-                path_list = resp.json()
-            else:
-                messages.info(request, 'Invalid search!', '')
-        if 'getswagger' in request.GET:
-            path_list = request.GET['getswagger'].split(';')[1:]
-            projname = request.GET['projectlist']
-            selectedpath = request.GET['pathlist']
-            query = 'path=' + selectedpath
-            resp = get_swagger(to, query=query)
-            if resp.status_code == 200:
-                swagobj = resp.json()['swaggerobject']
-            else:
-                messages.info(request, 'Invalid result!', '')
-        return render(request, 'ui/swagger_embed.html',
-                      {'authenticated': au, 'admin': ad, 'projects': projects.json(),
-                       'paths': path_list, 'projname': projname, 'jcon': swagobj, 'selectedpath': selectedpath})
+    if projects.status_code == 200:
+        if request.method == 'GET':
+            if 'getapipath' in request.GET:
+                projname = request.GET['projectlist']
+                resp = get_swaggerlist(to, projname)
+                if resp.status_code == 200:
+                    path_list = resp.json()
+                else:
+                    messages.info(request, 'Invalid search!', '')
+            if 'getswagger' in request.GET:
+                path_list = request.GET['getswagger'].split(';')[1:]
+                projname = request.GET['projectlist']
+                selectedpath = request.GET['pathlist']
+                query = 'path=' + selectedpath
+                resp = get_swagger(to, query=query)
+                if resp.status_code == 200:
+                    swagobj = resp.json()['swaggerobject']
+                else:
+                    messages.info(request, 'Invalid result!', '')
+    else:
+        messages.info(request, projects.json()['message'], '')
+    return render(request, 'ui/swagger_embed.html',
+                          {'authenticated': au, 'admin': ad, 'projects': projects.json(),
+                           'paths': path_list, 'projname': projname, 'jcon': swagobj, 'selectedpath': selectedpath})
 
     # with open('/Users/aahmed/Documents/FE_GIT/developer_portal/devportal_django_ui/ui/j.json') as json_file:
     #     abc = json.load(json_file)
@@ -303,7 +306,7 @@ def swaggeredit(request):
                 form = AddSwaggerForm(load)
                 showtag = True
             else:
-                messages.info(request, 'Invalid search!', '')
+                messages.info(request, 'Its an invalid search or authorization failure!', '')
                 showtag = False
             return render(request, 'ui/swaggeredit.html', {'form': form, 'authenticated': au, 'admin': ad,
                                                            'edit': True, 'showswag': showtag})
