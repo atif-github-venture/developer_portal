@@ -1,8 +1,8 @@
 # from flask import request
 # from flask_restplus import Resource
-# from devportal_flaskapi.main.service.group_service import create_group, get_all_groups, get_group, modify_group
+# from main.service.group_service import create_group, get_all_groups, get_group, modify_group
 # from ..helpers.dto import GroupDto
-# from devportal_flaskapi.main.helpers.decorator import admin_token_required
+# from main.helpers.decorator import admin_token_required
 #
 # api = GroupDto.api
 # group = GroupDto.group

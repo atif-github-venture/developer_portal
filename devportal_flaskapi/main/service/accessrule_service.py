@@ -1,5 +1,5 @@
-# from devportal_flaskapi.main.model.accessrule import AccessRules
-# from devportal_flaskapi.main import db
+# from main.model.accessrule import AccessRules
+# from main import db
 # import datetime
 #
 #

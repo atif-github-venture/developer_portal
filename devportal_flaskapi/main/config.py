@@ -14,7 +14,7 @@ class DevelopmentConfig(Config):
                         'host': 'localhost',
                         'port': 27017}
     ELASTIC_APM = {
-        'SERVICE_NAME': 'auth-service',
+        'SERVICE_NAME': 'developer-portal',
         'SERVER_URL': 'http://localhost:8200',
         'LOGGING': True
     }
@@ -31,7 +31,7 @@ class TestingConfig(Config):
                         'host': 'localhost',
                         'port': 27017}
     ELASTIC_APM = {
-        'SERVICE_NAME': 'auth-service',
+        'SERVICE_NAME': 'developer-portal',
         'SERVER_URL': 'http://localhost:8200',
         'LOGGING': True
     }
@@ -47,7 +47,7 @@ class ProductionConfig(Config):
                         'host': 'host.docker.internal',
                         'port': 27017}
     ELASTIC_APM = {
-        'SERVICE_NAME': 'auth-service',
+        'SERVICE_NAME': 'developer-portal',
         'SERVER_URL': 'http://host.docker.internal:8200',
         'LOGGING': True
     }

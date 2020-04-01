@@ -1,5 +1,5 @@
-from devportal_flaskapi.main.model.swagger import Swagger
-from devportal_flaskapi.main import db
+from main.model.swagger import Swagger
+from main import db
 import datetime
 
 

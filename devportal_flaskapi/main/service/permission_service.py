@@ -1,5 +1,5 @@
-from devportal_flaskapi.main.model.permission import Permission
-from devportal_flaskapi.main import db
+from main.model.permission import Permission
+from main import db
 import datetime
 
 

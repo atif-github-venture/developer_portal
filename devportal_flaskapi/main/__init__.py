@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from .config import config_by_name
 from elasticapm.contrib.flask import ElasticAPM
 from elasticapm.handlers.logging import LoggingHandler
-from devportal_flaskapi.main.helpers.prometheus import setup_metrics
+from main.helpers.prometheus import setup_metrics
 
 db = MongoEngine()
 flask_bcrypt = Bcrypt()

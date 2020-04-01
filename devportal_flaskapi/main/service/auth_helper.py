@@ -1,8 +1,8 @@
 import json
 
-from devportal_flaskapi.main.model.user import User
+from main.model.user import User
 from flask import Response, make_response
-from devportal_flaskapi.main.service.blacklist_service import save_token
+from main.service.blacklist_service import save_token
 
 
 class Auth:

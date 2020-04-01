@@ -1,9 +1,9 @@
 # from flask import request
 # from flask_restplus import Resource
-# from devportal_flaskapi.main.service.accessrule_service import create_accessrule, get_all_accessrule, get_accessrule, \
+# from main.service.accessrule_service import create_accessrule, get_all_accessrule, get_accessrule, \
 #     modify_accessrule
 # from ..helpers.dto import AccessDto
-# from devportal_flaskapi.main.helpers.decorator import admin_token_required
+# from main.helpers.decorator import admin_token_required
 #
 # api = AccessDto.api
 # access = AccessDto.access

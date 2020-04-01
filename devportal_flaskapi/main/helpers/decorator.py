@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import request
-from devportal_flaskapi.main.service.auth_helper import Auth
+from main.service.auth_helper import Auth
 from ..service.permission_service import get_permission
 
 

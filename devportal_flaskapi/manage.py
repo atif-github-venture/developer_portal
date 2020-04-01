@@ -1,13 +1,13 @@
-from devportal_flaskapi.main.helpers.consul import ConsulRegistration
-from devportal_flaskapi.main import create_app
-from devportal_flaskapi.main.controller.user_controller import api as user_ns
-from devportal_flaskapi.main.controller.auth_controller import api as auth_ns
-from devportal_flaskapi.main.controller.user_controller import _getapi as getuser_ns
-# from devportal_flaskapi.main.controller.group_controller import api as group_ns
-# from devportal_flaskapi.main.controller.accessrule_controller import api as access_ns
-from devportal_flaskapi.main.controller.swagger_controller import api as swagger_ns
-from devportal_flaskapi.main.controller.permission_controller import api as perm_ns
-from devportal_flaskapi.main.config import config_by_name
+from main.helpers.consul import ConsulRegistration
+from main import create_app
+from main.controller.user_controller import api as user_ns
+from main.controller.auth_controller import api as auth_ns
+from main.controller.user_controller import _getapi as getuser_ns
+# from main.controller.group_controller import api as group_ns
+# from main.controller.accessrule_controller import api as access_ns
+from main.controller.swagger_controller import api as swagger_ns
+from main.controller.permission_controller import api as perm_ns
+from main.config import config_by_name
 from flask_restplus import Api
 import prometheus_client
 from flask import Blueprint, Response

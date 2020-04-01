@@ -7,4 +7,4 @@ RUN pip3 install --timeout 50000 -r requirements.txt
 EXPOSE 80 80
 ENV ENV=prod
 ENTRYPOINT ["python3"]
-CMD ["app.py", "run"]
+CMD ["manage.py", "run"]

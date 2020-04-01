@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from flask_restplus import Resource
-from devportal_flaskapi.main.service.swagger_service import create_swagger, get_swagger, modify_swagger, \
+from ..service.swagger_service import create_swagger, get_swagger, modify_swagger, \
     modify_swagger_status, get_swagger_projectlist, get_swaggerlist_for_project, get_swagger_metrics
 from ..helpers.decorator import token_required, view_rights_required, dev_rights_required
 from ..helpers.dto import SwaggerDto

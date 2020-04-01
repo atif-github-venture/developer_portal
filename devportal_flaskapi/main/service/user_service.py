@@ -2,8 +2,8 @@ import json
 import uuid
 import datetime
 from flask import Response
-from devportal_flaskapi.main import db
-from devportal_flaskapi.main.model.user import User
+from main import db
+from main.model.user import User
 
 
 def register_new_user(data):
