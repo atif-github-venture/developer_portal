@@ -18,3 +18,4 @@ https://github.com/overiq/TGDB/tree/e5c32aeb89da5a2214a63c34df793db91ad65197/dja
 https://overiq.com/django-1-10/django-rendering-fields-manually/
 https://gist.github.com/oseiskar/dbd51a3727fc96dcf5ed189fca491fb3
 https://bootswatch.com/darkly/
+https://www.jwtechwriter.com/pdfs/pub-14-pw.pdf

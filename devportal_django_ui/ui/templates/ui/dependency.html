@@ -2,7 +2,20 @@
 {% block body_block %}
 <div class="container">
     <div class="jumbotron">
-        <h4>Expect to see microservices inter-dependency interactable graph </h4>
+        <h4>Different options of microservices inter-dependency visualization </h4>
+        <br>
+        <br>
+        <div>
+            {% autoescape off %}
+            {{ d_s }}
+            {% endautoescape %}
+        </div>
     </div>
+    <div>
+        {% autoescape off %}
+        {{ d_s1 }}
+        {% endautoescape %}
+    </div>
+
 </div>
 {% endblock %}

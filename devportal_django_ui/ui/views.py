@@ -39,7 +39,72 @@ def home(request):
 
 def dependency(request):
     to, ad, au = determine(request)
-    return render(request, 'ui/dependency.html', getbody(au, ad))
+    from graphviz import Digraph
+    dot = Digraph(comment='Service Dependencies', format='svg')
+    dot.node('A', 'Login')
+    dot.node('B', 'Accounts')
+    dot.node('C', 'Collections')
+    dot.node('D', 'Products')
+    dot.edges(['AB', 'AD', 'AC', 'CD'])
+    dot.edge('B', 'D', constraint='false')
+    dot.edge('B', 'C', constraint='false')
+    d_s = dot.pipe().decode('utf-8')
+
+    from pyvis.network import Network
+    import pandas as pd
+
+    got_net = Network(height="750px", width="100%", bgcolor="#222222", font_color="white")
+
+    # set the physics layout of the network
+    got_net.barnes_hut()
+    got_data = pd.read_csv('/Users/aahmed/Documents/FE_GIT/developer_portal/devportal_django_ui/ui/dep.csv')
+
+    sources = got_data['Source']
+    targets = got_data['Target']
+    weights = got_data['Weight']
+
+    edge_data = zip(sources, targets, weights)
+
+    for e in edge_data:
+        src = e[0]
+        dst = e[1]
+        w = e[2]
+
+        got_net.add_node(src, src, title=src)
+        got_net.add_node(dst, dst, title=dst)
+        got_net.add_edge(src, dst, value=w)
+
+    neighbor_map = got_net.get_adj_list()
+
+    # add neighbor data to node hover data
+    for node in got_net.nodes:
+        node["title"] += " Neighbors:<br>" + "<br>".join(neighbor_map[node["id"]])
+        node["value"] = len(neighbor_map[node["id"]])
+    # got_net.show_buttons(filter_=['physics'])
+    got_net.set_options("""var options = {
+      "physics": {
+        "barnesHut": {
+          "gravitationalConstant": -23577,
+          "centralGravity": 4.95,
+          "springLength": 260,
+          "springConstant": 0.44,
+          "damping": 0.14,
+          "avoidOverlap": 0.46
+        },
+        "maxVelocity": 118,
+        "minVelocity": 0.2,
+        "timestep": 0.11
+      }
+    }""")
+    got_net.write_html("ui/dep.html")
+    import codecs
+    f = codecs.open("ui/dep.html", 'r', 'utf-8')
+    d_s1 = f.read()
+    f.close()
+    import os
+    os.remove("ui/dep.html")
+    return render(request, 'ui/dependency.html', {'authenticated': au, 'admin': ad, 'd_s': d_s, 'd_s1': d_s1})
+
 
 
 def register(request):
