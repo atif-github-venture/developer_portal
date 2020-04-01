@@ -2,6 +2,7 @@ from flask import request, jsonify
 from flask_restplus import Resource
 from devportal_flaskapi.main.service.swagger_service import create_swagger, get_swagger, modify_swagger, \
     modify_swagger_status, get_swagger_projectlist, get_swaggerlist_for_project, get_swagger_metrics
+from ..helpers.decorator import token_required
 from ..helpers.dto import SwaggerDto
 from urllib.parse import parse_qs
 
@@ -12,6 +13,7 @@ swagger = SwaggerDto.swagger
 class SwaggerPost(Resource):
     @api.doc('To save swagger information')
     # @api.expect(swagger, validate=True)
+    @token_required
     @api.response(200, 'Swagger information saved.')
     def post(self):
         post_data = request.json
@@ -20,6 +22,7 @@ class SwaggerPost(Resource):
     @api.doc('Get details of a SINGLE swagger')
     @api.response(404, 'Swagger details not found.')
     @api.marshal_with(swagger)
+    @token_required
     def get(self, ):
         query_params = dict(parse_qs(request.query_string))
         query_params = {k.decode("utf-8"): v[0].decode("utf-8") for k, v in query_params.items()}
@@ -35,6 +38,7 @@ class SwaggerPost(Resource):
 @api.route('/project')
 @api.doc('get list of projects for swaggers')
 class GetSwaggerProject(Resource):
+    @token_required
     def get(self):
         swaggerproject = get_swagger_projectlist()
         if not swaggerproject:
@@ -46,6 +50,7 @@ class GetSwaggerProject(Resource):
 @api.route('/metrics')
 @api.doc('get metrics for dashboard')
 class GetSwaggerMetrics(Resource):
+    @token_required
     def get(self):
         status = ['Published', 'Deployed', 'Deprecated']
         swaggermetrics = get_swagger_metrics(status)
@@ -60,6 +65,7 @@ class GetSwaggerMetrics(Resource):
 @api.response(404, 'List not found')
 class GetSwaggerList(Resource):
     @api.doc('Get a list of swagger for a project')
+    @token_required
     def get(self, projectname):
         ms = get_swaggerlist_for_project(projectname)
         if not ms:
@@ -73,6 +79,7 @@ class GetSwaggerList(Resource):
 @api.response(200, 'Swagger updated.')
 @api.response(404, 'Swagger not found.')
 class ModifySwaggerStatus(Resource):
+    @token_required
     @api.doc('Modify a swagger status for a path')
     def put(self, swaggerpath, status):
         swaggerpath = swaggerpath.replace('#', '/')
@@ -89,6 +96,7 @@ class ModifySwaggerStatus(Resource):
 @api.response(404, 'Swagger not found.')
 class ModifySwagger(Resource):
     @api.doc('Modify a swagger for a path')
+    @token_required
     def put(self):
         swaggerpath = request.args.get('path')
         ms = modify_swagger(swaggerpath, data=request.json)
