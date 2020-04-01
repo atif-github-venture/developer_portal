@@ -23,10 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'gn!vhwt_qsh4306r8@oe)@o#egp+dsitk5m0sq#a9_hd85!by@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = eval((os.environ['DEBUG']))
+
+RESTHOST = os.environ['RESTHOST']
 
 
-ALLOWED_HOSTS = ['django.local', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['django.local', '127.0.0.1', 'localhost', '0.0.0.0']
 STATIC_URL = '/static/'
 
 # Application definition

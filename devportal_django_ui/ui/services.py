@@ -1,10 +1,13 @@
 import json
-
 import requests
+from django.conf import settings
+
+
+RESTHOST = getattr(settings, "RESTHOST", None)
 
 
 def get_groups(token):
-    url = "http://127.0.0.1:80/group"
+    url = "http://" + RESTHOST + "/group"
     groupinfo = requests.get(url, headers={
         'Authorization': token})
     group_list = groupinfo.json()['groupinfo']
@@ -12,7 +15,7 @@ def get_groups(token):
 
 
 def get_accessrules(token):
-    url = "http://127.0.0.1:80/accessrule"
+    url = "http://" + RESTHOST + "/accessrule"
     accessruleinfo = requests.get(url, headers={
         'Authorization': token})
     accessruleinfo_list = accessruleinfo.json()['accessruleinfo']
@@ -20,14 +23,14 @@ def get_accessrules(token):
 
 
 def get_group_details(token, searchstr):
-    url = "http://127.0.0.1:80/group/" + searchstr
+    url = "http://" + RESTHOST + "/group/" + searchstr
     resp = requests.get(url, headers={
         'Authorization': token})
     return resp
 
 
 def post_registration(email, user, password):
-    url = "http://127.0.0.1:80/user"
+    url = "http://" + RESTHOST + "/user"
     payload = {
         'email': email,
         'username': user,
@@ -41,7 +44,7 @@ def post_registration(email, user, password):
 
 
 def post_login(email, password):
-    url = "http://127.0.0.1:80/auth/login"
+    url = "http://" + RESTHOST + "/auth/login"
     payload = {
         'username': email,
         'password': password
@@ -53,7 +56,7 @@ def post_login(email, password):
 
 
 def put_groupmodify(token, searchstr, userlist):
-    url = "http://127.0.0.1:80/group/" + searchstr
+    url = "http://" + RESTHOST + "/group/" + searchstr
     payload = {
         'groupname': searchstr,
         'users': userlist
@@ -64,28 +67,28 @@ def put_groupmodify(token, searchstr, userlist):
 
 
 def get_swaggerprojects(token):
-    url = "http://127.0.0.1:80/swagger/project"
+    url = "http://" + RESTHOST + "/swagger/project"
     resp = requests.get(url, headers={
         'Authorization': token, 'Content-Type': 'application/json'})
     return resp
 
 
 def get_swaggerlist(token, search):
-    url = "http://127.0.0.1:80/swagger/project/"+search
+    url = "http://" + RESTHOST + "/swagger/project/"+search
     resp = requests.get(url, headers={
         'Authorization': token, 'Content-Type': 'application/json'})
     return resp
 
 
 def get_permission(token):
-    url = "http://127.0.0.1:80/permission"
+    url = "http://" + RESTHOST + "/permission"
     resp = requests.get(url, headers={
         'Authorization': token, 'Content-Type': 'application/json'})
     return resp
 
 
 def post_permission(token, user, listofperm):
-    url = "http://127.0.0.1:80/permission"
+    url = "http://" + RESTHOST + "/permission"
     payload = {
         "user": user,
         "permission": listofperm
@@ -96,7 +99,7 @@ def post_permission(token, user, listofperm):
 
 
 def put_permission(token, user, listofperm):
-    url = "http://127.0.0.1:80/permission"
+    url = "http://" + RESTHOST + "/permission"
     payload = {
         "user": user,
         "permission": listofperm
@@ -107,28 +110,28 @@ def put_permission(token, user, listofperm):
 
 
 def get_users(token):
-    url = "http://127.0.0.1:80/user"
+    url = "http://" + RESTHOST + "/user"
     resp = requests.get(url, headers={
         'Authorization': token, 'Content-Type': 'application/json'})
     return resp
 
 
 def get_swagger_metrics(token):
-    url = "http://127.0.0.1:80/swagger/metrics"
+    url = "http://" + RESTHOST + "/swagger/metrics"
     resp = requests.get(url, headers={
         'Authorization': token, 'Content-Type': 'application/json'})
     return resp
 
 
 def get_swagger(token, query):
-    url = "http://127.0.0.1:80/swagger?" + query
+    url = "http://" + RESTHOST + "/swagger?" + query
     resp = requests.get(url, headers={
         'Authorization': token, 'Content-Type': 'application/json'})
     return resp
 
 
 def post_swagger(token, projname, path, status, dep, tags, swagobj):
-    url = "http://127.0.0.1:80/swagger"
+    url = "http://" + RESTHOST + "/swagger"
     payload = {
         "projectname": projname,
         "path": path,
@@ -143,7 +146,7 @@ def post_swagger(token, projname, path, status, dep, tags, swagobj):
 
 
 def put_swagger(token, projname, path, status, dep, tags, swagobj):
-    url = "http://127.0.0.1:80/swagger/edit?path=" + path
+    url = "http://" + RESTHOST + "/swagger/edit?path=" + path
     payload = {
         "projectname": projname,
         "path": path,
@@ -158,7 +161,7 @@ def put_swagger(token, projname, path, status, dep, tags, swagobj):
 
 
 def post_logout(token):
-    url = "http://127.0.0.1:80/auth/logout"
+    url = "http://" + RESTHOST + "/auth/logout"
     headers = {'Authorization': token}
     resp = requests.post(url, data=None, headers=headers)
     resp.close()
