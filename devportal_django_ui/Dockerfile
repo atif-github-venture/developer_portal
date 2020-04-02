@@ -8,7 +8,8 @@ RUN pip3 install --timeout 50000 -r requirements.txt
 #ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 EXPOSE 8000 8000
-ENV DEBUG=False
+ENV DEBUG=True
 ENV RESTHOST="host.docker.internal:80"
 ENTRYPOINT ["python3"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+#CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "devportal_django.wsgi:application"]

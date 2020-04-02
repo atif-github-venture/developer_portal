@@ -19,3 +19,5 @@ https://overiq.com/django-1-10/django-rendering-fields-manually/
 https://gist.github.com/oseiskar/dbd51a3727fc96dcf5ed189fca491fb3
 https://bootswatch.com/darkly/
 https://www.jwtechwriter.com/pdfs/pub-14-pw.pdf
+https://12factor.net/config
+digitalocean.com/community/tutorials/how-to-build-a-django-and-gunicorn-application-with-docker
