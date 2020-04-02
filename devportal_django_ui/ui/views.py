@@ -57,17 +57,10 @@ def dependency(request):
 
     # set the physics layout of the network
     got_net.barnes_hut()
-    got_data = pd.read_csv('''Source,Target,Weight
-        Login,Account,30
-        Login,Product,30
-        Login,Collection,30
-        Login,Checkout,30
-        Collection,Product,30
-        Product,Checkout,30''')
 
-    sources = got_data['Source']
-    targets = got_data['Target']
-    weights = got_data['Weight']
+    sources = ['Login','Login', 'Login', 'Login', 'Collection', 'Product']
+    targets = ['Account', 'Product', 'Collection', 'Checkout', 'Product', 'Checkout']
+    weights = [30, 30, 30, 30, 30, 30]
 
     edge_data = zip(sources, targets, weights)
 
