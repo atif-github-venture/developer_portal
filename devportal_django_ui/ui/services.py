@@ -123,6 +123,20 @@ def get_swagger_metrics(token):
     return resp
 
 
+def get_swagger_dependency(token):
+    url = "http://" + RESTHOST + "/swagger/metrics/dependency"
+    resp = requests.get(url, headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
+def get_swagger_dependency_filter(token, search):
+    url = "http://" + RESTHOST + "/swagger/metrics/dependency" + '?filter=' + search
+    resp = requests.get(url, headers={
+        'Authorization': token, 'Content-Type': 'application/json'})
+    return resp
+
+
 def get_swagger(token, query):
     url = "http://" + RESTHOST + "/swagger?" + query
     resp = requests.get(url, headers={

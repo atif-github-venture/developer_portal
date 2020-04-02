@@ -1,21 +1,41 @@
 {% extends "ui/base.html" %}
 {% block body_block %}
 <div class="container">
-    <div class="jumbotron">
-        <h4>Different options of microservices inter-dependency visualization </h4>
-        <br>
-        <br>
+    <form name="depen" method="GET">
+        <table class="table table-info">
+            <tr>
+                <td width="15%" align="center">
+                    <p><strong>Select a filter</strong></p>
+                </td>
+                <td width="60%" align="center">
+                    <select id="project" name="depoption" class="custom-select">
+                        <option selected="selected">All</option>
+                        {% for option in options %}
+                            <option value="{{option}}" {% if option == optionname%} selected="selected" {% endif %}>
+                                {{option}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td width="15%" align="center">
+                    <button type="submit" class="btn btn-outline-warning" name="getdepfilter" value="getdepfilter">Display
+                    </button>
+                </td>
+            </tr>
+            <!--    </form>-->
+            <tbody>
+            </tbody>
+        </table>
         <div>
             {% autoescape off %}
-            {{ d_s }}
+                {{ d_s }}
             {% endautoescape %}
         </div>
-    </div>
-    <div>
-        {% autoescape off %}
-        {{ d_s1 }}
-        {% endautoescape %}
-    </div>
+    </form>
+    <br>
 
+    <div class="jumbotron">
+        <h5>You can select 'All' when you do a deeper search to get back full view.</h5>
+    </div>
 </div>
 {% endblock %}

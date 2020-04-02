@@ -1,6 +1,7 @@
 from main.model.swagger import Swagger
 from main import db
 import datetime
+from operator import add
 
 
 def save_changes(data):
@@ -56,11 +57,49 @@ def get_swagger_metrics(stats):
                 stats_all[stat] = value
             else:
                 stats_all[stat] += value
-        project_list.append({'project': project, 'status_count' : stats_values})
+        project_list.append({'project': project, 'status_count': stats_values})
     resp['status'] = stats
     resp['status_count_overall'] = [v for v in stats_all.values()]
     resp['project_list'] = project_list
     return resp
+
+
+def get_swagger_dependency_filter(search):
+    deplist = []
+    sources = []
+    targets = []
+    weights = []
+    so = Swagger.objects()
+    for item in so:
+        for dep in item['dependency']:
+            if search in [dep.strip(), item['path'].strip()]:
+                deplist.append([dep.strip(), item['path'].strip(), 30])
+    for item in deplist:
+        sources.append(item[0])
+        targets.append(item[1])
+        weights.append(item[2])
+    return {'sources': sources, 'targets': targets, 'weights': weights}
+
+
+def get_swagger_dependency():
+    deplist = []
+    sources = []
+    targets = []
+    weights = []
+    unique = []
+    so = Swagger.objects()
+    for item in so:
+        for dep in item['dependency']:
+            deplist.append([dep.strip(), item['path'].strip(), 30])
+    for item in deplist:
+        sources.append(item[0])
+        targets.append(item[1])
+        weights.append(item[2])
+    for x in sources:
+        unique.append(x)
+    for x in targets:
+        unique.append(x)
+    return {'sources': sources, 'targets': targets, 'weights': weights, 'unique_list': list(set(unique))}
 
 
 def get_swaggerlist_for_project(pn):

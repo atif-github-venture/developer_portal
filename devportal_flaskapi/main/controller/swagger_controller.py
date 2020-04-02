@@ -1,7 +1,8 @@
 from flask import request, jsonify
 from flask_restplus import Resource
 from ..service.swagger_service import create_swagger, get_swagger, modify_swagger, \
-    modify_swagger_status, get_swagger_projectlist, get_swaggerlist_for_project, get_swagger_metrics
+    modify_swagger_status, get_swagger_projectlist, get_swaggerlist_for_project, get_swagger_metrics, \
+    get_swagger_dependency, get_swagger_dependency_filter
 from ..helpers.decorator import token_required, view_rights_required, dev_rights_required
 from ..helpers.dto import SwaggerDto
 from urllib.parse import parse_qs
@@ -61,6 +62,26 @@ class GetSwaggerMetrics(Resource):
             api.abort(404)
         else:
             return swaggermetrics
+
+
+@api.route('/metrics/dependency')
+@api.doc('Get metrics for dependency graph')
+class GetSwaggerMetrics(Resource):
+    @token_required
+    @view_rights_required
+    def get(self):
+        swaggerdep = None
+        query_params = dict(parse_qs(request.query_string))
+        if len(query_params) == 0:
+            swaggerdep = get_swagger_dependency()
+        else:
+            query_params = {k.decode("utf-8"): v[0].decode("utf-8") for k, v in query_params.items()}
+            swaggerdep = get_swagger_dependency_filter(query_params['filter'])
+
+        if not swaggerdep:
+            api.abort(404)
+        else:
+            return swaggerdep
 
 
 @api.route('/project/<projectname>')
